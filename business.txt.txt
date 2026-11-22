@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8B5CF6">
+<title>SAVVI Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --p:#7C3AED; --p-dark:#6D28D9; --soft:#EDE9FE; --yellow:#FACC15; --ink:#2E1065; --muted:#5B4B7A; --line:#E9E3FF; --field:#D8CCFF; --bg:#F5F3FF; --deal:#A21CAF; --grad:linear-gradient(135deg,#8B5CF6 0%,#EC4899 100%); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  html[dir="rtl"] body { font-family: 'IBM Plex Sans Arabic', Inter, system-ui, sans-serif; }
+  .shell { display: flex; flex-wrap: wrap; min-height: 100vh; }
+  nav.side { flex: 1 1 220px; max-width: 260px; background: #fff; border-inline-end: 1px solid var(--line); padding: 24px 16px; display: flex; flex-direction: column; gap: 6px; }
+  main { flex: 999 1 560px; min-width: 0; padding: 28px clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 20px; }
+  @media (max-width: 700px) { nav.side { max-width: none; flex-basis: 100%; flex-direction: row; flex-wrap: wrap; border-inline-end: none; border-bottom: 1px solid var(--line); padding: 14px; } nav.side .brand { width: 100%; margin-bottom: 4px !important; } }
+  .brand { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .brand i { width: 26px; height: 26px; border-radius: 8px; background: var(--grad); display: block; }
+  .brand b { font-family: 'Space Grotesk', sans-serif; font-size: 20px; letter-spacing: 1px; }
+  .navbtn { padding: 10px 14px; border-radius: 12px; border: none; background: none; font: inherit; font-size: 15px; color: var(--ink); text-align: start; cursor: pointer; }
+  .navbtn.on { background: var(--soft); color: var(--p-dark); font-weight: 700; }
+  h1 { margin: 0; font-size: 30px; } h2 { margin: 0; font-size: 18px; }
+  .sub { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .muted { color: var(--muted); font-size: 13px; }
+  .card { padding: 20px; border-radius: 22px; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+  .kpi b { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 28px; }
+  .kpi.hot { background: var(--grad); color: #fff; border: none; } .kpi.hot .muted { color: #FDF4FF; }
+  .wrap { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .wrap > * { flex: 1 1 320px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: start; color: var(--muted); font-size: 13px; font-weight: 600; padding: 8px 6px; }
+  td { padding: 11px 6px; border-top: 1px solid #F1ECFF; }
+  .num { text-align: end; font-variant-numeric: tabular-nums; }
+  .tbl { overflow-x: auto; }
+  .pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--soft); color: var(--p-dark); white-space: nowrap; display: inline-block; }
+  .pill.gray { background: #F1ECFF; color: #4C3D6B; } .pill.warn { background: #FEF9C3; color: #713F12; } .pill.pink { background: #FCE7F3; color: #9D174D; }
+  label.l { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
+  .in, select.in { height: 46px; border-radius: 14px; border: 1px solid var(--field); background: #fff; padding: 0 14px; font-size: 15px; font-family: inherit; color: var(--ink); width: 100%; }
+  .in:focus { outline: 2px solid var(--p); outline-offset: 1px; }
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .btn { height: 46px; padding: 0 20px; border-radius: 999px; border: none; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 6px 16px rgba(139,92,246,.25); }
+  .btn-primary:disabled { background: #CFC3F7; box-shadow: none; }
+  .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--field); }
+  .btn-sm { height: 36px; padding: 0 14px; font-size: 13px; }
+  .lang { background: #fff; border: 1px solid var(--field); border-radius: 999px; height: 36px; padding: 0 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); }
+  .err { color: var(--deal); font-size: 14px; line-height: 1.5; } .ok { color: var(--p-dark); font-size: 14px; font-weight: 600; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+  .center { max-width: 460px; margin: 10vh auto 0; padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  @media (max-width: 700px) { .hide-s { display: none; } }
+  .line { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="app"><div class="center"><p class="sub">Loading…</p></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://qobvbfoslkkacnwwmfln.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IlHnptn2_GGau_loOn1Spg_7pTJrpPH';
+const TZ_OFFSET = 3;
+const T = {
+  en: { other: 'عربي', business: 'Business', signTitle: 'Business sign in', signSub: "Enter your email. We'll email you a sign-in link.", email: 'Email', send: 'Send sign-in email',
+    sent: 'Check your email and tap "Sign in" on this device. This page will open signed in.', bad: 'Please enter a valid email.', back: 'Back',
+    notLinked: 'Not linked to a business yet', notLinkedSub: 'You are signed in, but not added to a business. Ask SAVVI to add you as an owner, or your owner to add you as a cashier.',
+    cashierOnly: 'You are a cashier', cashierOnlySub: 'Open the cashier page to scan student cards.', openCashier: 'Open cashier page', signOut: 'Sign out', check: 'Check again',
+    overview: 'Overview', offers: 'Offers', staff: 'Staff', fees: 'Fees', thisMonth: 'This month',
+    redemptions: 'Redemptions', paid: 'Paid by students', discount: 'Discount given', owed: 'Fees owed to SAVVI', latest: 'Latest redemptions', privacy: 'No student names, phones or IDs are ever shown',
+    time: 'Time', branch: 'Branch', offer: 'Offer', bill: 'Bill', disc: 'Discount', paidCol: 'Paid', none: 'Nothing yet.', branches: 'Branches',
+    newOffer: 'New offer', editOffer: 'Edit offer', titleEn: 'Title (English)', titleAr: 'Title (Arabic)', type: 'Discount type', percent: 'Percent off', fixed: 'Fixed KWD off',
+    value: 'Value', minBill: 'Min. bill (KWD)', starts: 'Starts', ends: 'Ends (optional)', category: 'Category', saveOffer: 'Save offer', cancel: 'Cancel',
+    live: 'Live', paused: 'Paused', archived: 'Archived', pause: 'Pause', resume: 'Resume', archive: 'Archive', edit: 'Edit', saved: 'Saved.',
+    needTitle: 'Please add an English title.', needValue: 'Please enter a discount value above 0.', pctMax: 'A percent can be at most 100.',
+    staffList: 'Your staff', role: 'Role', status: 'Status', owner: 'Owner', cashier: 'Cashier', active: 'Active', inactive: 'Paused',
+    addCashier: 'Add a cashier', addHint: 'The person must first open the SAVVI cashier page and sign in once with their email.', name: 'Name', add: 'Add cashier',
+    totalOwed: 'Total owed to SAVVI right now', curPeriod: 'This period', invoicedUnpaid: 'Invoiced, not paid yet', nextCollection: 'Next collection', scans: 'scans',
+    autoColl: 'Automatic collection', autoSoon: 'Coming soon. For now, SAVVI will send you each invoice and you pay by bank transfer or KNET.', card: 'Saved card',
+    invoices: 'Invoices', invoice: 'Invoice', period: 'Period', amount: 'Amount', due: 'Due', paidSt: 'Paid', voidSt: 'Cancelled', open: 'Open', close: 'Close',
+    perScan: 'scans ×', correction: 'Correction', total: 'Total', allScans: 'All scans', kwd: 'KWD', currentFee: 'Fee plan' },
+  ar: { other: 'English', business: 'الأعمال', signTitle: 'تسجيل دخول الأعمال', signSub: 'أدخل بريدك الإلكتروني، وسنرسل لك رابط تسجيل الدخول.', email: 'البريد الإلكتروني', send: 'أرسل رسالة تسجيل الدخول',
+    sent: 'تحقّق من بريدك واضغط "Sign in" على هذا الجهاز. ستفتح هذه الصفحة وأنت مسجّل الدخول.', bad: 'يرجى إدخال بريد إلكتروني صحيح.', back: 'رجوع',
+    notLinked: 'حسابك غير مرتبط بنشاط تجاري بعد', notLinkedSub: 'لقد سجّلت الدخول، لكنك غير مضاف إلى أي نشاط تجاري. اطلب من SAVVI إضافتك كمالك، أو من المالك إضافتك ككاشير.',
+    cashierOnly: 'أنت كاشير', cashierOnlySub: 'افتح صفحة الكاشير لمسح بطاقات الطلاب.', openCashier: 'افتح صفحة الكاشير', signOut: 'تسجيل الخروج', check: 'تحقّق مرة أخرى',
+    overview: 'نظرة عامة', offers: 'العروض', staff: 'الموظفون', fees: 'الرسوم', thisMonth: 'هذا الشهر',
+    redemptions: 'عمليات الاستخدام', paid: 'دفعه الطلاب', discount: 'الخصم المقدَّم', owed: 'الرسوم المستحقة لـ SAVVI', latest: 'أحدث العمليات', privacy: 'لا تظهر أسماء الطلاب أو هواتفهم أو أرقامهم أبداً',
+    time: 'الوقت', branch: 'الفرع', offer: 'العرض', bill: 'الفاتورة', disc: 'الخصم', paidCol: 'المدفوع', none: 'لا شيء بعد.', branches: 'الفروع',
+    newOffer: 'عرض جديد', editOffer: 'تعديل العرض', titleEn: 'العنوان (بالإنجليزية)', titleAr: 'العنوان (بالعربية)', type: 'نوع الخصم', percent: 'نسبة مئوية', fixed: 'مبلغ ثابت بالدينار',
+    value: 'القيمة', minBill: 'الحد الأدنى للفاتورة (د.ك)', starts: 'يبدأ', ends: 'ينتهي (اختياري)', category: 'الفئة', saveOffer: 'حفظ العرض', cancel: 'إلغاء',
+    live: 'فعّال', paused: 'متوقف', archived: 'مؤرشف', pause: 'إيقاف', resume: 'تفعيل', archive: 'أرشفة', edit: 'تعديل', saved: 'تم الحفظ.',
+    needTitle: 'يرجى إضافة عنوان بالإنجليزية.', needValue: 'يرجى إدخال قيمة خصم أكبر من 0.', pctMax: 'النسبة لا يمكن أن تتجاوز 100.',
+    staffList: 'موظفوك', role: 'الدور', status: 'الحالة', owner: 'المالك', cashier: 'كاشير', active: 'فعّال', inactive: 'متوقف',
+    addCashier: 'إضافة كاشير', addHint: 'يجب أن يفتح الشخص صفحة الكاشير في SAVVI ويسجّل الدخول ببريده مرة واحدة أولاً.', name: 'الاسم', add: 'إضافة الكاشير',
+    totalOwed: 'إجمالي المستحق لـ SAVVI الآن', curPeriod: 'الفترة الحالية', invoicedUnpaid: 'صدرت بها فاتورة ولم تُدفع', nextCollection: 'التحصيل القادم', scans: 'عملية',
+    autoColl: 'التحصيل التلقائي', autoSoon: 'قريباً. حالياً سترسل لك SAVVI كل فاتورة وتدفعها بتحويل بنكي أو KNET.', card: 'البطاقة المحفوظة',
+    invoices: 'الفواتير', invoice: 'الفاتورة', period: 'الفترة', amount: 'المبلغ', due: 'تستحق', paidSt: 'مدفوعة', voidSt: 'ملغاة', open: 'عرض', close: 'إغلاق',
+    perScan: 'عملية ×', correction: 'تصحيح', total: 'الإجمالي', allScans: 'جميع العمليات', kwd: 'د.ك', currentFee: 'باقة الرسوم' }
+};
+function load(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+const S = { lang: load('savvi_lang', 'en'), view: 'loading', tab: 'overview', email: '', err: '', msg: '', busy: false, user: null, emp: null, m: null,
+  branches: [], offers: [], cats: [], reds: [], staff: [], bal: null, invoices: [], cards: [], openInv: null, form: null };
+const t = (k) => T[S.lang][k];
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const kwd = (x) => Number(x || 0).toFixed(3);
+const nm = (o, en, ar) => o ? ((S.lang === 'ar' && o[ar]) ? o[ar] : o[en]) : '';
+const loc = () => S.lang === 'ar' ? 'ar-KW-u-nu-latn' : 'en-GB';
+function monthStartIso() { const n = new Date(Date.now() + TZ_OFFSET * 3600e3); return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), 1) - TZ_OFFSET * 3600e3).toISOString(); }
+const dt = (iso) => new Date(iso).toLocaleString(loc(), { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kuwait' });
+const d1 = (d) => d ? new Date(d + 'T00:00:00').toLocaleDateString(loc(), { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+
+let busyBoot = false;
+async function boot() {
+  if (busyBoot) return; busyBoot = true;
+  try {
+    const { data } = await sb.auth.getSession();
+    if (!data.session) { busyBoot = false; return go('signin'); }
+    S.user = data.session.user;
+    const { data: emps } = await sb.from('merchant_employees').select('id, merchant_id, branch_id, role, display_name, status').eq('auth_user_id', S.user.id).eq('status', 'active');
+    const own = (emps || []).find(e => e.role === 'owner');
+    if (!own) { busyBoot = false; return go((emps || []).length ? 'cashier' : 'notlinked'); }
+    S.emp = own; await loadAll(); busyBoot = false; go('main');
+  } catch (e) { busyBoot = false; S.err = e.message || String(e); go('notlinked'); }
+}
+async function loadAll() {
+  const mid = S.emp.merchant_id;
+  const [m, br, of, ca, rd, st, bl, iv, cd] = await Promise.all([
+    sb.from('merchants').select('id, name_en, name_ar, category_id').eq('id', mid).maybeSingle(),
+    sb.from('branches').select('id, name, area, status').eq('merchant_id', mid).order('name'),
+    sb.from('offers').select('*').eq('merchant_id', mid).order('created_at', { ascending: false }),
+    sb.from('categories').select('id, name_en, name_ar').order('sort_order'),
+    sb.from('merchant_redemptions').select('*').eq('merchant_id', mid).gte('redeemed_at', monthStartIso()).order('redeemed_at', { ascending: false }),
+    sb.from('merchant_employees').select('id, branch_id, role, display_name, status').eq('merchant_id', mid).order('role'),
+    sb.from('merchant_fee_balances').select('*').eq('merchant_id', mid).maybeSingle(),
+    sb.from('invoices').select('*').eq('merchant_id', mid).order('period_start', { ascending: false }),
+    sb.from('merchant_payment_methods').select('card_brand, card_last4, expiry_month, expiry_year, is_default, status').eq('merchant_id', mid).eq('status', 'active')
+  ]);
+  S.m = m.data; S.branches = br.data || []; S.offers = of.data || []; S.cats = ca.data || []; S.reds = (rd.data || []).filter(r => r.status === 'completed');
+  S.staff = st.data || []; S.bal = bl.data; S.invoices = iv.data || []; S.cards = cd.data || [];
+}
+async function sendLink(ev) {
+  ev && ev.preventDefault();
+  const email = (document.getElementById('email').value || '').trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { S.err = t('bad'); return render(); }
+  S.email = email; S.err = ''; S.busy = true; render();
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname } });
+  S.busy = false; if (error) { S.err = error.message; return render(); } go('sent');
+}
+async function signOut() { await sb.auth.signOut(); S.user = null; S.emp = null; go('signin'); }
+function setLang() { S.lang = S.lang === 'en' ? 'ar' : 'en'; save('savvi_lang', S.lang); render(); }
+function setTab(x) { S.tab = x; S.err = ''; S.msg = ''; S.form = null; S.openInv = null; render(); }
+async function refresh(msg) { await loadAll(); S.msg = msg || ''; render(); }
+
+/* offers */
+function newOffer() { S.form = { id: null, title_en: '', title_ar: '', discount_type: 'percent', discount_value: '', min_bill_amount: '', starts_at: new Date().toISOString().slice(0, 10), ends_at: '', category_id: S.m && S.m.category_id || '' }; S.err = ''; render(); }
+function editOffer(id) { const o = S.offers.find(x => x.id === id); S.form = { ...o, starts_at: (o.starts_at || '').slice(0, 10), ends_at: (o.ends_at || '').slice(0, 10), min_bill_amount: o.min_bill_amount == null ? '' : o.min_bill_amount, category_id: o.category_id || '' }; render(); }
+async function saveOffer(ev) {
+  ev.preventDefault(); const f = new FormData(ev.target); const val = parseFloat(f.get('discount_value'));
+  const rec = { title_en: (f.get('title_en') || '').trim(), title_ar: (f.get('title_ar') || '').trim() || null, discount_type: f.get('discount_type'), discount_value: val,
+    min_bill_amount: f.get('min_bill_amount') ? parseFloat(f.get('min_bill_amount')) : null, category_id: f.get('category_id') || null,
+    starts_at: f.get('starts_at') ? new Date(f.get('starts_at') + 'T00:00:00+03:00').toISOString() : new Date().toISOString(),
+    ends_at: f.get('ends_at') ? new Date(f.get('ends_at') + 'T23:59:59+03:00').toISOString() : null };
+  Object.assign(S.form, { title_en: f.get('title_en'), title_ar: f.get('title_ar'), discount_type: f.get('discount_type'), discount_value: f.get('discount_value'),
+    min_bill_amount: f.get('min_bill_amount'), starts_at: f.get('starts_at'), ends_at: f.get('ends_at'), category_id: f.get('category_id') });
+  if (!rec.title_en) { S.err = t('needTitle'); return render(); }
+  if (!(val > 0)) { S.err = t('needValue'); return render(); }
+  if (rec.discount_type === 'percent' && val > 100) { S.err = t('pctMax'); return render(); }
+  S.busy = true; render();
+  const res = S.form.id ? await sb.from('offers').update(rec).eq('id', S.form.id) : await sb.from('offers').insert({ ...rec, merchant_id: S.emp.merchant_id });
+  S.busy = false; if (res.error) { S.err = res.error.message; return render(); }
+  S.form = null; S.err = ''; refresh(t('saved'));
+}
+async function setOfferStatus(id, status) { const r = await sb.from('offers').update({ status }).eq('id', id); if (r.error) { S.err = r.error.message; return render(); } refresh(t('saved')); }
+/* staff */
+async function addCashier(ev) {
+  ev.preventDefault(); const f = new FormData(ev.target); S.busy = true; render();
+  const { error } = await sb.rpc('owner_add_cashier', { p_merchant_id: S.emp.merchant_id, p_email: f.get('email'), p_branch_id: f.get('branch'), p_display_name: f.get('name') });
+  S.busy = false; if (error) { S.err = error.message; return render(); } S.err = ''; refresh(t('saved'));
+}
+async function setCashier(id, status) { const { error } = await sb.rpc('owner_set_cashier_status', { p_employee_id: id, p_status: status }); if (error) { S.err = error.message; return render(); } refresh(t('saved')); }
+
+function go(v) { S.view = v; render(); }
+function langBtn() { return `<button class="lang" onclick="setLang()">${t('other')}</button>`; }
+function statusPill(s) { return s === 'active' ? `<span class="pill">${t('live')}</span>` : s === 'inactive' ? `<span class="pill warn">${t('paused')}</span>` : `<span class="pill gray">${t('archived')}</span>`; }
+const V = {
+  loading: () => `<div class="center"><p class="sub">…</p></div>`,
+  signin: () => `<form class="center" onsubmit="sendLink(event)" novalidate><div class="row"><div class="brand" style="margin:0"><i></i><b>SAVVI</b><span class="pill">${t('business')}</span></div>${langBtn()}</div>
+    <h1>${t('signTitle')}</h1><p class="sub">${t('signSub')}</p>
+    <div><label class="l" for="email">${t('email')}</label><input class="in ltr" id="email" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="name@business.com"></div>
+    ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<button class="btn btn-primary" style="height:54px" ${S.busy ? 'disabled' : ''}>${S.busy ? '…' : t('send')}</button></form>`,
+  sent: () => `<div class="center"><div class="row"><div class="brand" style="margin:0"><i></i><b>SAVVI</b></div>${langBtn()}</div><h1>✉️</h1><p class="sub">${t('sent')}</p><p class="ltr"><b>${esc(S.email)}</b></p><button class="btn btn-light" onclick="go('signin')">${t('back')}</button></div>`,
+  notlinked: () => `<div class="center"><div class="row"><div class="brand" style="margin:0"><i></i><b>SAVVI</b></div>${langBtn()}</div><h1>${t('notLinked')}</h1><p class="sub">${t('notLinkedSub')}</p>
+    <p class="ltr"><b>${esc(S.user && S.user.email)}</b></p>${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<button class="btn btn-primary" onclick="boot()">${t('check')}</button><button class="btn btn-light" onclick="signOut()">${t('signOut')}</button></div>`,
+  cashier: () => `<div class="center"><div class="row"><div class="brand" style="margin:0"><i></i><b>SAVVI</b></div>${langBtn()}</div><h1>${t('cashierOnly')}</h1><p class="sub">${t('cashierOnlySub')}</p>
+    <a class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;text-decoration:none" href="index.html">${t('openCashier')}</a><button class="btn btn-light" onclick="signOut()">${t('signOut')}</button></div>`,
+  main: () => `<div class="shell"><nav class="side" aria-label="Business"><div class="brand"><i></i><b>SAVVI</b><span class="pill">${t('business')}</span></div>
+      ${['overview', 'offers', 'staff', 'fees'].map(x => `<button class="navbtn ${S.tab === x ? 'on' : ''}" onclick="setTab('${x}')">${t(x)}</button>`).join('')}
+      <div style="flex:1"></div>${langBtn()}<button class="navbtn" onclick="signOut()">${t('signOut')}</button></nav>
+    <main><div class="row"><div><div class="muted" style="font-size:14px">${esc(nm(S.m, 'name_en', 'name_ar'))}</div><h1>${t(S.tab)}</h1></div></div>
+      ${S.msg ? `<div class="ok">${esc(S.msg)}</div>` : ''}${S.err && !S.form ? `<div class="err">${esc(S.err)}</div>` : ''}
+      ${({ overview, offers: offersTab, staff: staffTab, fees: feesTab })[S.tab]()}</main></div>`
+};
+function overview() {
+  const paid = S.reds.reduce((a, r) => a + Number(r.paid_amount), 0), disc = S.reds.reduce((a, r) => a + Number(r.discount_amount), 0);
+  const byB = {}; S.reds.forEach(r => byB[r.branch_id] = (byB[r.branch_id] || 0) + 1);
+  return `<div class="grid4">
+      <div class="card kpi"><span class="muted">${t('redemptions')} · ${t('thisMonth')}</span><b>${S.reds.length}</b></div>
+      <div class="card kpi"><span class="muted">${t('paid')}</span><b>${kwd(paid)}</b><span class="muted">${t('kwd')}</span></div>
+      <div class="card kpi"><span class="muted">${t('discount')}</span><b>${kwd(disc)}</b><span class="muted">${t('kwd')}</span></div>
+      <div class="card kpi hot"><span class="muted">${t('owed')}</span><b>${kwd(S.bal && S.bal.total_owed)}</b><span class="muted">${t('kwd')}</span></div></div>
+    <div class="card"><div class="row"><h2>${t('latest')}</h2><span class="muted">${t('privacy')}</span></div>
+      <div class="tbl"><table><thead><tr><th>${t('time')}</th><th class="hide-s">${t('offer')}</th><th class="num">${t('bill')}</th><th class="num hide-s">${t('disc')}</th><th class="num">${t('paidCol')}</th></tr></thead><tbody>
+      ${S.reds.slice(0, 15).map(r => { const o = S.offers.find(x => x.id === r.offer_id); return `<tr><td style="white-space:nowrap">${dt(r.redeemed_at)}<div class="muted">${esc(r.branch_name)}</div></td><td class="hide-s">${esc(o ? nm(o, 'title_en', 'title_ar') : r.offer_title)}</td>
+        <td class="num">${kwd(r.bill_amount)}</td><td class="num hide-s" style="color:var(--deal)">${kwd(r.discount_amount)}</td><td class="num"><b>${kwd(r.paid_amount)}</b></td></tr>`; }).join('') || `<tr><td colspan="5" class="muted">${t('none')}</td></tr>`}
+      </tbody></table></div></div>
+    <div class="card"><h2>${t('branches')}</h2>${S.branches.map(b => `<div class="line"><span>${esc(b.name)} <span class="muted">${esc(b.area || '')}</span></span><b>${byB[b.id] || 0}</b></div>`).join('')}</div>`;
+}
+function offersTab() {
+  const f = S.form;
+  const form = f ? `<form class="card" onsubmit="saveOffer(event)" novalidate><h2>${f.id ? t('editOffer') : t('newOffer')}</h2>
+      <div class="form"><div><label class="l">${t('titleEn')}</label><input class="in" name="title_en" value="${esc(f.title_en)}"></div>
+        <div><label class="l">${t('titleAr')}</label><input class="in" name="title_ar" dir="rtl" value="${esc(f.title_ar || '')}"></div></div>
+      <div class="form"><div><label class="l">${t('type')}</label><select class="in" name="discount_type"><option value="percent" ${f.discount_type === 'percent' ? 'selected' : ''}>${t('percent')}</option><option value="fixed_amount" ${f.discount_type === 'fixed_amount' ? 'selected' : ''}>${t('fixed')}</option></select></div>
+        <div><label class="l">${t('value')}</label><input class="in ltr" name="discount_value" inputmode="decimal" value="${esc(f.discount_value)}"></div>
+        <div><label class="l">${t('minBill')}</label><input class="in ltr" name="min_bill_amount" inputmode="decimal" value="${esc(f.min_bill_amount)}"></div></div>
+      <div class="form"><div><label class="l">${t('starts')}</label><input class="in" type="date" name="starts_at" value="${esc(f.starts_at)}"></div>
+        <div><label class="l">${t('ends')}</label><input class="in" type="date" name="ends_at" value="${esc(f.ends_at || '')}"></div>
+        <div><label class="l">${t('category')}</label><select class="in" name="category_id"><option value=""></option>${S.cats.map(c => `<option value="${c.id}" ${c.id === f.category_id ? 'selected' : ''}>${esc(nm(c, 'name_en', 'name_ar'))}</option>`).join('')}</select></div></div>
+      ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}
+      <div class="row" style="justify-content:flex-end"><button type="button" class="btn btn-light" onclick="S.form=null;S.err='';render()">${t('cancel')}</button><button class="btn btn-primary" ${S.busy ? 'disabled' : ''}>${t('saveOffer')}</button></div></form>`
+    : `<div><button class="btn btn-primary" onclick="newOffer()">+ ${t('newOffer')}</button></div>`;
+  return form + S.offers.map(o => `<div class="card"><div class="row"><div><b style="font-size:16px">${esc(nm(o, 'title_en', 'title_ar'))}</b>
+      <div class="muted">${o.discount_type === 'percent' ? Number(o.discount_value) + '%' : kwd(o.discount_value) + ' ' + t('kwd')}${o.min_bill_amount != null ? ' · ' + t('minBill') + ' ' + kwd(o.min_bill_amount) : ''}${o.ends_at ? ' · → ' + d1(o.ends_at.slice(0, 10)) : ''}</div></div>
+      <div class="row">${statusPill(o.status)}
+        ${o.status !== 'archived' ? `<button class="btn btn-light btn-sm" onclick="editOffer('${o.id}')">${t('edit')}</button>` : ''}
+        ${o.status === 'active' ? `<button class="btn btn-light btn-sm" onclick="setOfferStatus('${o.id}','inactive')">${t('pause')}</button>` : ''}
+        ${o.status === 'inactive' ? `<button class="btn btn-light btn-sm" onclick="setOfferStatus('${o.id}','active')">${t('resume')}</button><button class="btn btn-light btn-sm" onclick="setOfferStatus('${o.id}','archived')">${t('archive')}</button>` : ''}</div></div></div>`).join('');
+}
+function staffTab() {
+  const bn = (id) => { const b = S.branches.find(x => x.id === id); return b ? b.name : '—'; };
+  return `<div class="card"><h2>${t('staffList')}</h2><div class="tbl"><table><thead><tr><th>${t('name')}</th><th>${t('role')}</th><th>${t('branch')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+    ${S.staff.map(e => `<tr><td>${esc(e.display_name)}</td><td>${e.role === 'owner' ? t('owner') : t('cashier')}</td><td>${esc(e.role === 'owner' ? '—' : bn(e.branch_id))}</td>
+      <td>${e.status === 'active' ? `<span class="pill">${t('active')}</span>` : `<span class="pill warn">${t('inactive')}</span>`}</td>
+      <td>${e.role === 'cashier' ? `<button class="btn btn-light btn-sm" onclick="setCashier('${e.id}','${e.status === 'active' ? 'inactive' : 'active'}')">${e.status === 'active' ? t('pause') : t('resume')}</button>` : ''}</td></tr>`).join('')}
+    </tbody></table></div></div>
+    <form class="card" onsubmit="addCashier(event)" novalidate><h2>${t('addCashier')}</h2><p class="sub" style="font-size:14px">${t('addHint')}</p>
+      <div class="form"><div><label class="l">${t('email')}</label><input class="in ltr" name="email" type="email"></div><div><label class="l">${t('name')}</label><input class="in" name="name"></div>
+      <div><label class="l">${t('branch')}</label><select class="in" name="branch">${S.branches.filter(b => b.status === 'active').map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select></div></div>
+      ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<div><button class="btn btn-primary" ${S.busy ? 'disabled' : ''}>${t('add')}</button></div></form>`;
+}
+function feesTab() {
+  const b = S.bal || {}; const card = S.cards.find(c => c.is_default) || S.cards[0];
+  const pill = (i) => i.status === 'paid' ? `<span class="pill">${t('paidSt')}</span>` : i.status === 'void' ? `<span class="pill gray">${t('voidSt')}</span>` : `<span class="pill warn">${t('due')} ${d1(i.due_date)}</span>`;
+  const inv = S.openInv ? S.invoices.find(i => i.id === S.openInv) : null;
+  return `<div class="wrap"><div class="card kpi hot" style="flex:2 1 380px"><span class="muted">${t('totalOwed')}</span><b style="font-size:40px">${kwd(b.total_owed)} <span style="font-size:18px">${t('kwd')}</span></b>
+      <div class="grid4"><div><div class="muted">${t('curPeriod')} · ${d1(b.current_period_start)} – ${d1(b.current_period_end)}</div><b style="font-size:20px">${kwd(b.fees_this_period)}</b><div class="muted">${b.scans_this_period || 0} ${t('scans')}</div></div>
+      <div><div class="muted">${t('invoicedUnpaid')}</div><b style="font-size:20px">${kwd(b.invoiced_unpaid)}</b></div></div></div>
+    <div class="card"><h2>${t('autoColl')}</h2><div class="line"><span>${t('nextCollection')}</span><b>${d1(b.next_collection_date)}</b></div>
+      ${card ? `<div class="line"><span>${t('card')}</span><b class="ltr">${esc(card.card_brand)} •${esc(card.card_last4)}</b></div>` : ''}<p class="sub" style="font-size:14px">${t('autoSoon')}</p></div></div>
+    <div class="wrap"><div class="card" style="flex:3 1 460px"><h2>${t('invoices')}</h2><div class="tbl"><table><thead><tr><th>${t('invoice')}</th><th class="hide-s">${t('period')}</th><th class="num hide-s">${t('scans')}</th><th class="num">${t('amount')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+      ${S.invoices.map(i => `<tr><td class="ltr" style="font-family:ui-monospace,monospace;font-size:13px;white-space:nowrap">${esc(i.invoice_number)}</td><td class="hide-s" style="white-space:nowrap">${d1(i.period_start)} – ${d1(i.period_end)}</td>
+        <td class="num hide-s">${i.redemption_count}</td><td class="num"><b>${kwd(i.total_amount)}</b></td><td>${pill(i)}</td><td><button class="btn btn-light btn-sm" onclick="S.openInv='${i.id}';render()">${t('open')}</button></td></tr>`).join('') || `<tr><td colspan="6" class="muted">${t('none')}</td></tr>`}
+      </tbody></table></div></div>
+    ${inv ? `<div class="card" style="flex:2 1 320px"><div class="row"><h2 class="ltr">${esc(inv.invoice_number)}</h2><button class="btn btn-light btn-sm" onclick="S.openInv=null;render()">${t('close')}</button></div>
+      <span class="muted">${d1(inv.period_start)} – ${d1(inv.period_end)}</span>
+      ${(inv.summary || []).map(s => `<div class="line"><span>${s.scans} ${t('perScan')} ${kwd(s.fee_per_scan)}</span><span>${kwd(s.subtotal)}</span></div>`).join('')}
+      ${(inv.adjustments || []).map(a => `<div class="line" style="color:var(--deal)"><span>${t('correction')}: ${esc(a.note || '')}</span><span class="ltr">${kwd(a.amount)}</span></div>`).join('')}
+      <div class="line" style="border-top:1px solid var(--line);padding-top:8px;font-weight:700;font-size:16px"><span>${t('total')}</span><span>${kwd(inv.total_amount)} ${t('kwd')}</span></div>
+      <details><summary class="muted" style="cursor:pointer">${t('allScans')} (${(inv.lines || []).length})</summary>
+        <div class="tbl"><table><tbody>${(inv.lines || []).map(l => `<tr><td class="ltr">${esc(l.date)}</td><td>${esc(l.branch || '')}</td><td class="num">${kwd(l.paid)}</td><td class="num">${kwd(l.fee)}</td></tr>`).join('')}</tbody></table></div></details></div>` : ''}</div>`;
+}
+function render() { document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === 'ar' ? 'rtl' : 'ltr'; document.getElementById('app').innerHTML = V[S.view](); }
+sb.auth.onAuthStateChange((ev) => { if (ev === 'SIGNED_IN' && ['signin', 'sent', 'loading'].includes(S.view)) setTimeout(boot, 0); });
+render(); boot();
+</script>
+</body>
+</html>

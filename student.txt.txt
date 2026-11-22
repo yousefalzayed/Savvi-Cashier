@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8B5CF6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SAVVI">
+<title>SAVVI · Student discounts</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --p:#7C3AED; --p-dark:#6D28D9; --soft:#EDE9FE; --yellow:#FACC15; --ink:#2E1065; --muted:#5B4B7A; --line:#E9E3FF; --field:#D8CCFF; --bg:#F5F3FF; --deal:#A21CAF; --grad:linear-gradient(135deg,#8B5CF6 0%,#EC4899 100%); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  html[dir="rtl"] body { font-family: 'IBM Plex Sans Arabic', Inter, system-ui, sans-serif; }
+  .app { max-width: 560px; margin: 0 auto; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+  .pad { padding: max(20px, env(safe-area-inset-top)) 20px 20px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .brand i { width: 28px; height: 28px; border-radius: 9px; background: var(--grad); display: block; }
+  .brand b { font-family: 'Space Grotesk', sans-serif; font-size: 22px; letter-spacing: 1px; }
+  .hero { background: var(--grad); color: #fff; padding: max(28px, env(safe-area-inset-top)) 24px 30px; display: flex; flex-direction: column; gap: 40px; border-radius: 0 0 32px 32px; }
+  .hero .brand i { background: var(--yellow); }
+  h1 { margin: 0; font-size: 28px; line-height: 1.25; }
+  .hero h1 { font-size: 32px; }
+  .sub { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .hero .sub { color: #FEF9C3; }
+  label.l { font-size: 13px; font-weight: 600; display: block; margin-bottom: 8px; }
+  .field { display: flex; flex-direction: column; }
+  input.in { height: 52px; border-radius: 16px; border: 1px solid var(--field); background: #fff; padding: 0 16px; font-size: 16px; font-family: inherit; color: var(--ink); width: 100%; }
+  input.in:focus { outline: 2px solid var(--p); outline-offset: 1px; }
+  .ltr { direction: ltr; }
+  html[dir="rtl"] .ltr { text-align: right; }
+  .btn { height: 56px; border-radius: 999px; border: none; font-size: 17px; font-weight: 600; font-family: inherit; cursor: pointer; width: 100%; }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 6px 18px rgba(139,92,246,.30); }
+  .btn-primary:disabled { background: #CFC3F7; box-shadow: none; cursor: not-allowed; }
+  .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--field); height: 50px; font-size: 15px; }
+  .btn-text { background: transparent; color: var(--muted); height: 44px; font-size: 15px; font-weight: 500; }
+  .link { background: none; border: none; color: var(--p); font: inherit; font-weight: 600; cursor: pointer; padding: 6px 0; min-height: 44px; }
+  .card { padding: 16px; border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .row { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .err { color: var(--deal); font-size: 14px; line-height: 1.5; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .pill { font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 999px; background: var(--soft); color: var(--p-dark); white-space: nowrap; }
+  .lang { background: #fff; border: 1px solid var(--field); border-radius: 999px; height: 36px; padding: 0 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink); }
+  .hero .lang { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.4); color: #fff; }
+  .progress { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; }
+  .progress i { height: 6px; border-radius: 3px; background: var(--field); display: block; }
+  .progress i.on { background: var(--grad); }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+  .chip { height: 38px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--field); background: #fff; font: inherit; font-size: 13px; font-weight: 500; color: var(--ink); white-space: nowrap; cursor: pointer; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .biz { display: flex; gap: 14px; padding: 14px; border-radius: 22px; background: #fff; border: 1px solid var(--line); }
+  .avatar { width: 60px; height: 60px; border-radius: 18px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 19px; color: var(--p-dark); flex-shrink: 0; }
+  .deal { font-size: 14px; font-weight: 600; color: var(--deal); }
+  .deal small { font-weight: 400; color: var(--muted); }
+  .tabs { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); border-top: 1px solid var(--line); background: #fff; padding-bottom: env(safe-area-inset-bottom); }
+  .tabs button { height: 64px; border: none; background: none; font: inherit; font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+  .tabs button.on { color: var(--p); font-weight: 700; }
+  .scard { border-radius: 28px; background: var(--grad); color: #fff; padding: 22px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 14px 30px rgba(139,92,246,.30); }
+  .qrbox { align-self: center; padding: 14px; border-radius: 22px; background: #fff; line-height: 0; }
+  .qrbox svg { width: 230px; height: 230px; display: block; }
+  .codes { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 8px; direction: ltr; }
+  .codes input { height: 56px; text-align: center; font-size: 22px; font-weight: 600; padding: 0; }
+  .big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+  .check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.55; }
+  .check input { width: 22px; height: 22px; margin: 0; accent-color: var(--p); flex-shrink: 0; }
+  .note { padding: 14px 16px; border-radius: 18px; background: #FEF9C3; color: #713F12; font-size: 14px; line-height: 1.55; }
+  .spacer { flex: 1; }
+  .center { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="app" id="app"><div class="pad"><p class="sub">Loading…</p></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+const SUPABASE_URL = 'https://qobvbfoslkkacnwwmfln.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IlHnptn2_GGau_loOn1Spg_7pTJrpPH';
+const TZ_OFFSET = 3;
+
+const T = {
+  en: {
+    other: 'عربي', heroTitle: 'Student discounts all over Kuwait', heroSub: 'One card. Cafes, fashion, fun. Show it, save.',
+    uniEmail: 'Your university email', uniHint: 'Kuwait University, AUK, GUST, AUM, Australian University, AASU, PAAET and more.',
+    send: 'Send my sign-in email', member: 'Already a member? Use the same email to sign in.', business: 'Business staff? Sign in here',
+    emailBad: 'Please enter a valid email.', checkTitle: 'Check your university inbox', sentTo: 'We sent a sign-in email to',
+    linkHint: 'Open that email on this phone and tap "Sign in". SAVVI will open already signed in.', junk: 'University emails can land in Junk.',
+    orCode: 'Or type the 6-digit code, if your email shows one', verify: 'Verify', changeEmail: 'Change email', resend: 'Send again', wrongCode: "That code didn't work. Try again.",
+    step1: 'Step 1 of 2', step2: 'Step 2 of 2', nameTitle: "What's your name?", nameSub: 'This goes on your SAVVI card. Businesses never see it.',
+    first: 'First name', last: 'Last name', next: 'Continue', idTitle: 'Your university ID', fromEmail: 'from your email',
+    sid: 'University student ID', phone: 'Phone', optional: '(optional)', terms: 'I agree to the Terms and Privacy Policy.',
+    consent: 'Optional: include my visits in anonymous group statistics that help businesses improve. Never my name.',
+    finish: 'Get my SAVVI card', needName: 'Please enter your first and last name.', needId: 'Please enter your university student ID.', needTerms: 'Please accept the terms to continue.',
+    hi: 'Hi', todays: "Today's offers", saved: 'Saved', search: 'Search cafes, shops, areas', all: 'All', noOffers: 'No offers match your search yet.',
+    min: 'min.', off: 'off', myCard: 'My SAVVI card', showCashier: 'Show this to the cashier at any SAVVI business. Your card never changes.',
+    verifiedUntil: 'Verified student until', wallet: 'Add to Apple Wallet', walletSoon: 'Coming soon: Apple Wallet and Google Wallet. For now, add SAVVI to your Home Screen: tap Share, then "Add to Home Screen".',
+    savings: 'My savings', totalSaved: 'Total saved with SAVVI', thisMonth: 'this month', times: 'times used', history: 'History', noHistory: 'No savings yet. Show your card at a SAVVI business to start saving.',
+    tOffers: 'Offers', tCard: 'My card', tSavings: 'Savings', signOut: 'Sign out', problem: 'Something went wrong', tryAgain: 'Try again',
+    expired: 'Your student verification has ended. Confirm your university email again to keep saving.', reverify: 'Verify again', pausedAcct: 'Your SAVVI account is paused. Please contact SAVVI support.', kwd: 'KWD', branches: 'branches'
+  },
+  ar: {
+    other: 'English', heroTitle: 'خصومات للطلاب في كل الكويت', heroSub: 'بطاقة واحدة. مقاهٍ وأزياء وترفيه. اعرضها ووفّر.',
+    uniEmail: 'بريدك الجامعي', uniHint: 'جامعة الكويت، الجامعة الأمريكية في الكويت، جامعة الخليج، جامعة الشرق الأوسط الأمريكية، الجامعة الأسترالية، جامعة عبدالله السالم، التطبيقي والمزيد.',
+    send: 'أرسل رسالة تسجيل الدخول', member: 'لديك حساب؟ استخدم البريد نفسه لتسجيل الدخول.', business: 'موظف في نشاط تجاري؟ سجّل الدخول من هنا',
+    emailBad: 'يرجى إدخال بريد إلكتروني صحيح.', checkTitle: 'تحقّق من بريدك الجامعي', sentTo: 'أرسلنا رسالة تسجيل الدخول إلى',
+    linkHint: 'افتح الرسالة على هذا الهاتف واضغط "Sign in". سيفتح SAVVI وأنت مسجّل الدخول.', junk: 'قد تصل رسائل البريد الجامعي إلى البريد غير المرغوب فيه.',
+    orCode: 'أو اكتب الرمز المكوّن من 6 أرقام إن وُجد في الرسالة', verify: 'تحقّق', changeEmail: 'غيّر البريد', resend: 'أرسل مرة أخرى', wrongCode: 'الرمز غير صحيح. حاول مرة أخرى.',
+    step1: 'الخطوة 1 من 2', step2: 'الخطوة 2 من 2', nameTitle: 'ما اسمك؟', nameSub: 'سيظهر على بطاقة SAVVI الخاصة بك. لا يراه أي نشاط تجاري أبداً.',
+    first: 'الاسم الأول', last: 'اسم العائلة', next: 'متابعة', idTitle: 'رقمك الجامعي', fromEmail: 'من بريدك الإلكتروني',
+    sid: 'الرقم الجامعي', phone: 'رقم الهاتف', optional: '(اختياري)', terms: 'أوافق على الشروط وسياسة الخصوصية.',
+    consent: 'اختياري: أوافق على إدراج زياراتي ضمن إحصاءات جماعية مجهولة الهوية تساعد الأنشطة التجارية على التحسّن، دون ذكر اسمي أبداً.',
+    finish: 'احصل على بطاقة SAVVI', needName: 'يرجى إدخال الاسم الأول واسم العائلة.', needId: 'يرجى إدخال الرقم الجامعي.', needTerms: 'يرجى الموافقة على الشروط للمتابعة.',
+    hi: 'مرحباً', todays: 'عروض اليوم', saved: 'وفّرت', search: 'ابحث عن مقاهٍ أو متاجر أو مناطق', all: 'الكل', noOffers: 'لا توجد عروض مطابقة بعد.',
+    min: 'الحد الأدنى', off: 'خصم', myCard: 'بطاقة SAVVI', showCashier: 'اعرض هذه البطاقة على الكاشير في أي نشاط تجاري مشترك في SAVVI. بطاقتك لا تتغيّر أبداً.',
+    verifiedUntil: 'طالب موثّق حتى', wallet: 'أضف إلى Apple Wallet', walletSoon: 'قريباً: Apple Wallet و Google Wallet. حالياً، أضف SAVVI إلى الشاشة الرئيسية: اضغط مشاركة ثم "إضافة إلى الشاشة الرئيسية".',
+    savings: 'توفيري', totalSaved: 'إجمالي ما وفّرته مع SAVVI', thisMonth: 'هذا الشهر', times: 'مرة استخدام', history: 'السجل', noHistory: 'لا يوجد توفير بعد. اعرض بطاقتك في أي نشاط تجاري مشترك لتبدأ التوفير.',
+    tOffers: 'العروض', tCard: 'بطاقتي', tSavings: 'التوفير', signOut: 'تسجيل الخروج', problem: 'حدثت مشكلة', tryAgain: 'حاول مرة أخرى',
+    expired: 'انتهى توثيقك كطالب. أكّد بريدك الجامعي مرة أخرى لتواصل التوفير.', reverify: 'التوثيق مرة أخرى', pausedAcct: 'حسابك في SAVVI متوقف مؤقتاً. يرجى التواصل مع دعم SAVVI.', kwd: 'د.ك', branches: 'فروع'
+  }
+};
+const ERR_AR = {
+  'This email is not from a recognised university. Please use your university email.': 'هذا البريد ليس من جامعة معتمدة. يرجى استخدام بريدك الجامعي.',
+  'Please confirm your university email with the code first': 'يرجى تأكيد بريدك الجامعي أولاً.'
+};
+
+function load(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+const S = { lang: load('savvi_lang', 'en'), view: 'loading', tab: 'offers', email: '', err: '', busy: false, user: null,
+  student: null, priv: null, uni: null, card: null, data: null, savings: null, q: '', cat: 'all', first: '', last: '', sid: '', phone: '', terms: false, consent: false };
+const t = (k) => T[S.lang][k];
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const kwd = (x) => Number(x || 0).toFixed(3);
+const nm = (o, en, ar) => (S.lang === 'ar' && o[ar]) ? o[ar] : o[en];
+const initials = (s) => String(s || '?').replace(/\(.*?\)/g, '').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+function errText(e) { const m = (e && e.message) || String(e || ''); return S.lang === 'ar' && ERR_AR[m] ? ERR_AR[m] : m; }
+function monthStartIso() { const n = new Date(Date.now() + TZ_OFFSET * 3600e3); return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), 1) - TZ_OFFSET * 3600e3).toISOString(); }
+function dateLabel(iso) { return new Date(iso).toLocaleDateString(S.lang === 'ar' ? 'ar-KW-u-nu-latn' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Asia/Kuwait' }); }
+
+/* ---------- loading ---------- */
+let loading = false;
+async function boot() {
+  if (loading) return; loading = true;
+  try {
+    const { data } = await sb.auth.getSession();
+    if (!data.session) { loading = false; return go('signin'); }
+    S.user = data.session.user;
+    const { data: st } = await sb.from('students').select('id, institution_id, verification_status, verification_expires_at, status').eq('auth_user_id', S.user.id).maybeSingle();
+    S.student = st || null;
+    const valid = st && st.status === 'active' && st.verification_status === 'verified' && st.verification_expires_at && new Date(st.verification_expires_at) > new Date();
+    if (st && st.status !== 'active') { loading = false; S.err = t('pausedAcct'); return go('problem'); }
+    if (!valid) { S.first = S.first || ''; loading = false; return go(st && st.verification_expires_at ? 'expired' : 'name'); }
+    const [{ data: pv }, { data: uni }] = await Promise.all([
+      sb.from('student_private').select('first_name, last_name, full_name').eq('student_id', st.id).maybeSingle(),
+      sb.from('institutions').select('name_en, name_ar').eq('id', st.institution_id).maybeSingle()
+    ]);
+    S.priv = pv; S.uni = uni;
+    await Promise.all([loadOffers(), loadSavings()]);
+    loading = false; go('main');
+  } catch (e) { loading = false; S.err = errText(e); go('problem'); }
+}
+async function loadOffers() {
+  const [{ data: cats }, { data: ms }, { data: brs }, { data: offs }] = await Promise.all([
+    sb.from('categories').select('id, slug, name_en, name_ar, sort_order').order('sort_order'),
+    sb.from('merchants').select('id, name_en, name_ar, category_id'),
+    sb.from('branches').select('merchant_id, name, area'),
+    sb.from('offers').select('id, merchant_id, category_id, title_en, title_ar, min_bill_amount, starts_at, ends_at')
+  ]);
+  const now = Date.now();
+  const live = (offs || []).filter(o => new Date(o.starts_at).getTime() <= now && (!o.ends_at || new Date(o.ends_at).getTime() > now));
+  const list = (ms || []).map(m => ({ ...m, offers: live.filter(o => o.merchant_id === m.id), branches: (brs || []).filter(b => b.merchant_id === m.id) }))
+    .filter(m => m.offers.length);
+  S.data = { cats: cats || [], merchants: list };
+}
+async function loadSavings() {
+  const { data } = await sb.from('redemptions').select('id, merchant_id, branch_id, discount_amount, paid_amount, redeemed_at, status').eq('student_id', S.student.id).eq('status', 'completed').order('redeemed_at', { ascending: false }).limit(200);
+  const rows = data || []; const ms = monthStartIso();
+  S.savings = { rows, total: rows.reduce((a, r) => a + Number(r.discount_amount), 0),
+    month: rows.filter(r => r.redeemed_at >= ms).reduce((a, r) => a + Number(r.discount_amount), 0), count: rows.length };
+}
+async function loadCard() {
+  if (S.card) return;
+  const { data, error } = await sb.rpc('get_my_student_card');
+  if (error) { S.err = errText(error); return; }
+  S.card = Array.isArray(data) ? data[0] : data;
+}
+
+/* ---------- actions ---------- */
+async function sendLink(ev) {
+  ev && ev.preventDefault();
+  const el = document.getElementById('email'); const email = ((el && el.value) || S.email || '').trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { S.err = t('emailBad'); return render(); }
+  S.email = email; S.err = ''; S.busy = true; render();
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: location.origin + location.pathname } });
+  S.busy = false; if (error) { S.err = errText(error); return render(); }
+  go('check');
+}
+async function verifyCode(ev) {
+  ev && ev.preventDefault();
+  const code = Array.from(document.querySelectorAll('.codes input')).map(i => i.value.trim()).join('');
+  if (!/^\d{6}$/.test(code)) { S.err = t('wrongCode'); return render(); }
+  S.busy = true; render();
+  const { error } = await sb.auth.verifyOtp({ email: S.email, token: code, type: 'email' });
+  S.busy = false; if (error) { S.err = t('wrongCode'); return render(); }
+  boot();
+}
+function saveName(ev) {
+  ev.preventDefault();
+  S.first = document.getElementById('first').value.trim(); S.last = document.getElementById('last').value.trim();
+  if (!S.first || !S.last) { S.err = t('needName'); return render(); }
+  S.err = ''; go('id');
+}
+async function register(ev) {
+  ev.preventDefault();
+  S.sid = document.getElementById('sid').value.trim(); S.phone = document.getElementById('phone').value.trim();
+  S.terms = document.getElementById('terms').checked; S.consent = document.getElementById('consent').checked;
+  if (!S.sid) { S.err = t('needId'); return render(); }
+  if (!S.terms) { S.err = t('needTerms'); return render(); }
+  S.err = ''; S.busy = true; render();
+  const { error } = await sb.rpc('register_student', { p_first_name: S.first, p_last_name: S.last, p_student_number: S.sid, p_phone: S.phone || null, p_accept_terms: S.terms, p_analytics_consent: S.consent });
+  S.busy = false; if (error) { S.err = errText(error); return render(); }
+  S.card = null; boot();
+}
+async function signOut() { await sb.auth.signOut(); Object.assign(S, { user: null, student: null, card: null, priv: null, email: '' }); go('signin'); }
+function setLang() { S.lang = S.lang === 'en' ? 'ar' : 'en'; save('savvi_lang', S.lang); render(); }
+async function setTab(tab) { S.tab = tab; if (tab === 'card') { render(); await loadCard(); } render(); }
+
+/* ---------- screens ---------- */
+function go(v) { S.view = v; render(); }
+function topbar() { return `<div class="top"><div class="brand"><i></i><b>SAVVI</b></div><button class="lang" onclick="setLang()">${t('other')}</button></div>`; }
+const V = {
+  loading: () => `<div class="pad"><p class="sub">…</p></div>`,
+  signin: () => `<div class="hero"><div class="top"><div class="brand"><i></i><b>SAVVI</b></div><button class="lang" onclick="setLang()">${t('other')}</button></div>
+      <div class="stack"><h1>${t('heroTitle')}</h1><p class="sub">${t('heroSub')}</p></div></div>
+    <form class="pad" onsubmit="sendLink(event)" novalidate>
+      <div class="field"><label class="l" for="email">${t('uniEmail')}</label>
+        <input class="in ltr" id="email" type="email" inputmode="email" autocomplete="email" placeholder="s1234567@ku.edu.kw" value="${esc(S.email)}">
+        <p class="muted" style="margin:8px 0 0;line-height:1.5">${t('uniHint')}</p></div>
+      ${S.err ? `<div class="err" role="alert">${esc(S.err)}</div>` : ''}
+      <button class="btn btn-primary" ${S.busy ? 'disabled' : ''}>${S.busy ? '…' : t('send')}</button>
+      <p class="muted" style="text-align:center;margin:0">${t('member')}</p>
+      <div class="spacer"></div><a class="link" style="text-align:center;text-decoration:none" href="business.html">${t('business')}</a>
+    </form>`,
+  check: () => `<div class="pad">${topbar()}
+    <div class="stack" style="margin-top:12px"><h1>${t('checkTitle')}</h1><p class="sub">${t('sentTo')} <b class="ltr" style="color:var(--ink)">${esc(S.email)}</b></p></div>
+    <div class="card" style="background:var(--soft);border:none;line-height:1.55;font-size:15px">${t('linkHint')}<br><span class="muted">${t('junk')}</span></div>
+    <form class="stack" onsubmit="verifyCode(event)" novalidate><label class="l">${t('orCode')}</label>
+      <div class="codes">${[0,1,2,3,4,5].map(i => `<input class="in" aria-label="${i+1}" inputmode="numeric" maxlength="1">`).join('')}</div>
+      ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<button class="btn btn-primary">${t('verify')}</button></form>
+    <div class="row"><button class="link" onclick="go('signin')">${t('changeEmail')}</button><button class="link" onclick="sendLink()">${t('resend')}</button></div></div>`,
+  name: () => `<form class="pad" onsubmit="saveName(event)" novalidate>${topbar()}
+    <div class="stack"><b style="font-size:13px;color:var(--p)">${t('step1')}</b><div class="progress"><i class="on"></i><i></i></div></div>
+    <div class="stack"><h1>${t('nameTitle')}</h1><p class="sub">${t('nameSub')}</p></div>
+    <div class="field"><label class="l" for="first">${t('first')}</label><input class="in" id="first" autocomplete="given-name" value="${esc(S.first)}"></div>
+    <div class="field"><label class="l" for="last">${t('last')}</label><input class="in" id="last" autocomplete="family-name" value="${esc(S.last)}"></div>
+    ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}
+    <div class="spacer"></div><button class="btn btn-primary">${t('next')}</button>
+    <button type="button" class="btn btn-text" onclick="signOut()">${t('signOut')}</button></form>`,
+  id: () => `<form class="pad" onsubmit="register(event)" novalidate>${topbar()}
+    <div class="stack"><b style="font-size:13px;color:var(--p)">${t('step2')}</b><div class="progress"><i class="on"></i><i class="on"></i></div></div>
+    <h1>${t('idTitle')}</h1>
+    <div class="pill" style="align-self:flex-start;font-size:13px">✓ <span class="ltr">${esc(S.user && S.user.email)}</span></div>
+    <div class="field"><label class="l" for="sid">${t('sid')}</label><input class="in ltr" id="sid" autocomplete="off" value="${esc(S.sid)}"></div>
+    <div class="field"><label class="l" for="phone">${t('phone')} <span style="font-weight:400;color:var(--muted)">${t('optional')}</span></label><input class="in ltr" id="phone" type="tel" placeholder="+965" value="${esc(S.phone)}"></div>
+    <label class="check"><input type="checkbox" id="terms" ${S.terms ? 'checked' : ''}><span>${t('terms')}</span></label>
+    <label class="check"><input type="checkbox" id="consent" ${S.consent ? 'checked' : ''}><span>${t('consent')}</span></label>
+    ${S.err ? `<div class="err" role="alert">${esc(S.err)}</div>` : ''}
+    <div class="spacer"></div><button class="btn btn-primary" ${S.busy ? 'disabled' : ''}>${S.busy ? '…' : t('finish')}</button>
+    <button type="button" class="btn btn-text" onclick="go('name')">←</button></form>`,
+  expired: () => `<div class="pad">${topbar()}<div class="center" style="margin-top:40px"><h1>${t('expired')}</h1></div><div class="spacer"></div>
+    <button class="btn btn-primary" onclick="S.first='';go('name')">${t('reverify')}</button><button class="btn btn-text" onclick="signOut()">${t('signOut')}</button></div>`,
+  problem: () => `<div class="pad">${topbar()}<div class="center" style="margin-top:40px"><h1>${t('problem')}</h1><p class="sub">${esc(S.err)}</p></div><div class="spacer"></div>
+    <button class="btn btn-primary" onclick="S.err='';boot()">${t('tryAgain')}</button><button class="btn btn-text" onclick="signOut()">${t('signOut')}</button></div>`,
+  main: () => `${S.tab === 'offers' ? offersView() : S.tab === 'card' ? cardView() : savingsView()}
+    <nav class="tabs" aria-label="SAVVI">
+      <button class="${S.tab === 'offers' ? 'on' : ''}" onclick="setTab('offers')">${t('tOffers')}</button>
+      <button class="${S.tab === 'card' ? 'on' : ''}" onclick="setTab('card')">${t('tCard')}</button>
+      <button class="${S.tab === 'savings' ? 'on' : ''}" onclick="setTab('savings')">${t('tSavings')}</button></nav>`
+};
+function offersView() {
+  const d = S.data || { cats: [], merchants: [] }; const q = S.q.toLowerCase();
+  const list = d.merchants.filter(m => (S.cat === 'all' || m.category_id === S.cat || m.offers.some(o => o.category_id === S.cat)) &&
+    (!q || [m.name_en, m.name_ar, ...m.branches.map(b => b.name + ' ' + (b.area || '')), ...m.offers.map(o => o.title_en + ' ' + (o.title_ar || ''))].join(' ').toLowerCase().includes(q)));
+  const usedCats = d.cats.filter(c => d.merchants.some(m => m.category_id === c.id));
+  return `<div class="pad">
+    <div class="top"><div><div class="muted" style="font-size:14px">${t('hi')} ${esc(S.priv ? S.priv.first_name : '')}</div><div class="big" style="font-size:24px">${t('todays')}</div></div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="pill">${t('saved')} ${kwd(S.savings && S.savings.total)} ${t('kwd')}</span><button class="lang" onclick="setLang()">${t('other')}</button></div></div>
+    <input class="in" id="q" placeholder="${t('search')}" aria-label="${t('search')}" value="${esc(S.q)}" oninput="S.q=this.value;renderList()">
+    <div class="chips"><button class="chip ${S.cat === 'all' ? 'on' : ''}" onclick="S.cat='all';render()">${t('all')}</button>
+      ${usedCats.map(c => `<button class="chip ${S.cat === c.id ? 'on' : ''}" onclick="S.cat='${c.id}';render()">${esc(nm(c, 'name_en', 'name_ar'))}</button>`).join('')}</div>
+    <div class="stack" id="list">${listHtml(list)}</div></div>`;
+}
+function listHtml(list) {
+  if (!list.length) return `<p class="sub">${t('noOffers')}</p>`;
+  return list.map(m => `<div class="biz"><div class="avatar">${esc(initials(m.name_en))}</div><div class="stack" style="gap:4px;min-width:0">
+      <b style="font-size:15px">${esc(nm(m, 'name_en', 'name_ar'))}</b>
+      <span class="muted">${esc(m.branches.map(b => b.area || b.name).filter((v, i, a) => a.indexOf(v) === i).join(' · '))}</span>
+      ${m.offers.map(o => `<span class="deal">${esc(nm(o, 'title_en', 'title_ar'))}${o.min_bill_amount != null ? ` <small>· ${t('min')} ${kwd(o.min_bill_amount)} ${t('kwd')}</small>` : ''}</span>`).join('')}
+    </div></div>`).join('');
+}
+function renderList() {
+  const el = document.getElementById('list'); if (!el) return;
+  const keep = S.view; S.view = 'main'; const tmp = document.createElement('div'); tmp.innerHTML = offersView(); S.view = keep;
+  el.innerHTML = tmp.querySelector('#list').innerHTML;
+}
+function qrSvg(text) {
+  if (!window.qrcode) return `<div style="width:230px;height:230px;display:flex;align-items:center;justify-content:center;color:#2E1065">${esc(text)}</div>`;
+  const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createSvgTag({ cellSize: 6, margin: 0, scalable: true });
+}
+function cardView() {
+  const name = S.priv ? (S.priv.full_name || `${S.priv.first_name} ${S.priv.last_name}`) : '';
+  const until = S.student && S.student.verification_expires_at ? new Date(S.student.verification_expires_at).toLocaleDateString(S.lang === 'ar' ? 'ar-KW-u-nu-latn' : 'en-GB', { month: 'long', year: 'numeric' }) : '';
+  return `<div class="pad"><div class="top"><span class="big" style="font-size:24px">${t('myCard')}</span><button class="lang" onclick="setLang()">${t('other')}</button></div>
+    <div class="scard"><div class="row" style="align-items:flex-start"><div class="stack" style="gap:4px"><b style="font-size:22px">${esc(name)}</b><span style="color:#FEF9C3;font-size:14px">${esc(S.uni ? nm(S.uni, 'name_en', 'name_ar') : '')}</span></div>
+      <b style="font-family:'Space Grotesk',sans-serif;letter-spacing:1px">SAVVI</b></div>
+      <div class="qrbox">${S.card ? qrSvg(S.card.card_code) : `<div style="width:230px;height:230px"></div>`}</div>
+      ${S.card ? `<div class="ltr" style="text-align:center;font-family:ui-monospace,monospace;font-size:12px;color:#FDF4FF;opacity:.9">${esc(S.card.card_code)}</div>` : (S.err ? `<div style="text-align:center">${esc(S.err)}</div>` : '')}</div>
+    <p class="sub">${t('showCashier')}</p>
+    <span style="color:var(--p-dark);font-weight:600;font-size:14px">${t('verifiedUntil')} ${esc(until)}</span>
+    <button class="btn btn-light" onclick="document.getElementById('wnote').style.display='block'"> ${t('wallet')}</button>
+    <div class="note" id="wnote" style="display:none">${t('walletSoon')}</div>
+    <button class="btn btn-text" onclick="signOut()">${t('signOut')}</button></div>`;
+}
+function savingsView() {
+  const s = S.savings || { rows: [], total: 0, month: 0, count: 0 };
+  const names = {}; (S.data ? S.data.merchants : []).forEach(m => names[m.id] = nm(m, 'name_en', 'name_ar'));
+  return `<div class="pad"><div class="top"><span class="big" style="font-size:24px">${t('savings')}</span><button class="lang" onclick="setLang()">${t('other')}</button></div>
+    <div class="card stack"><span class="muted" style="font-size:14px">${t('totalSaved')}</span>
+      <span class="big" style="font-size:44px;line-height:1.05;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">${kwd(s.total)} <span style="font-size:20px">${t('kwd')}</span></span>
+      <div class="row" style="justify-content:flex-start;gap:40px;margin-top:6px"><div><b style="font-size:18px">${kwd(s.month)} ${t('kwd')}</b><div class="muted">${t('thisMonth')}</div></div><div><b style="font-size:18px">${s.count}</b><div class="muted">${t('times')}</div></div></div></div>
+    <b class="muted" style="font-weight:600">${t('history')}</b>
+    <div class="card" style="padding:4px 16px">${s.rows.length ? s.rows.map(r => `<div class="row" style="padding:12px 0;border-bottom:1px solid #F1ECFF">
+        <div><b style="font-size:15px">${esc(names[r.merchant_id] || 'SAVVI')}</b><div class="muted">${dateLabel(r.redeemed_at)}</div></div>
+        <b class="ltr" style="color:var(--p)">+${kwd(r.discount_amount)}</b></div>`).join('') : `<p class="sub" style="padding:12px 0">${t('noHistory')}</p>`}</div></div>`;
+}
+function render() {
+  document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === 'ar' ? 'rtl' : 'ltr';
+  const q = document.activeElement && document.activeElement.id === 'q';
+  document.getElementById('app').innerHTML = V[S.view]();
+  if (q) { const el = document.getElementById('q'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }
+  if (S.view === 'check') {
+    const boxes = Array.from(document.querySelectorAll('.codes input'));
+    boxes.forEach((b, i) => {
+      b.addEventListener('input', () => { const v = b.value.replace(/\D/g, '');
+        if (v.length > 1) { v.slice(0, 6).split('').forEach((d, j) => { if (boxes[j]) boxes[j].value = d; }); return; }
+        b.value = v; if (v && boxes[i + 1]) boxes[i + 1].focus(); });
+      b.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !b.value && boxes[i - 1]) boxes[i - 1].focus(); });
+    });
+  }
+}
+sb.auth.onAuthStateChange((ev) => {
+  if (ev === 'SIGNED_IN' && ['signin', 'check', 'loading'].includes(S.view)) setTimeout(boot, 0);
+  if (ev === 'SIGNED_OUT' && S.view !== 'signin') go('signin');
+});
+render(); boot();
+</script>
+</body>
+</html>

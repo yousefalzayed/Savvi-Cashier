@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2E1065">
+<meta name="robots" content="noindex">
+<title>SAVVI Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --p:#7C3AED; --p-dark:#6D28D9; --soft:#EDE9FE; --yellow:#FACC15; --ink:#2E1065; --muted:#5B4B7A; --line:#E9E3FF; --field:#D8CCFF; --bg:#F5F3FF; --deal:#A21CAF; --grad:linear-gradient(135deg,#8B5CF6 0%,#EC4899 100%); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif; -webkit-text-size-adjust: 100%; }
+  html[dir="rtl"] body { font-family: 'IBM Plex Sans Arabic', Inter, system-ui, sans-serif; }
+  .shell { display: flex; flex-wrap: wrap; min-height: 100vh; }
+  nav.side { flex: 1 1 210px; max-width: 240px; background: var(--ink); color: #fff; padding: 24px 14px; display: flex; flex-direction: column; gap: 4px; }
+  main { flex: 999 1 560px; min-width: 0; padding: 28px clamp(14px, 3.5vw, 36px); display: flex; flex-direction: column; gap: 18px; }
+  @media (max-width: 760px) { nav.side { max-width: none; flex-basis: 100%; flex-direction: row; flex-wrap: wrap; padding: 12px; } nav.side .brand { width: 100%; margin-bottom: 4px !important; } nav.side .grow { display: none; } }
+  .brand { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .brand i { width: 26px; height: 26px; border-radius: 8px; background: var(--grad); display: block; }
+  .brand b { font-family: 'Space Grotesk', sans-serif; font-size: 20px; letter-spacing: 1px; }
+  .navbtn { padding: 10px 14px; border-radius: 12px; border: none; background: none; font: inherit; font-size: 15px; color: #DDD6FE; text-align: start; cursor: pointer; }
+  .navbtn.on { background: rgba(255,255,255,.12); color: #fff; font-weight: 700; }
+  h1 { margin: 0; font-size: 28px; } h2 { margin: 0; font-size: 18px; } h3 { margin: 0; font-size: 15px; }
+  .sub { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .muted { color: var(--muted); font-size: 13px; }
+  .card { padding: 18px; border-radius: 22px; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .kpi b { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 26px; }
+  .kpi.hot { background: var(--grad); color: #fff; border: none; } .kpi.hot .muted { color: #FDF4FF; }
+  .kpi.warn { background: #FEF9C3; border-color: #FDE68A; }
+  .wrap { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; } .wrap > * { flex: 1 1 320px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: start; color: var(--muted); font-size: 12px; font-weight: 600; padding: 8px 6px; white-space: nowrap; }
+  td { padding: 10px 6px; border-top: 1px solid #F1ECFF; vertical-align: middle; }
+  tr.sel td { background: #FAF7FF; }
+  .num { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbl { overflow-x: auto; }
+  .pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--soft); color: var(--p-dark); white-space: nowrap; display: inline-block; }
+  .pill.gray { background: #F1ECFF; color: #4C3D6B; } .pill.warn { background: #FEF9C3; color: #713F12; } .pill.pink { background: #FCE7F3; color: #9D174D; }
+  label.l { font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px; }
+  .in, select.in, textarea.in { height: 42px; border-radius: 12px; border: 1px solid var(--field); background: #fff; padding: 0 12px; font-size: 14px; font-family: inherit; color: var(--ink); width: 100%; }
+  textarea.in { height: auto; padding: 10px 12px; font-family: ui-monospace, monospace; font-size: 13px; }
+  .in:focus { outline: 2px solid var(--p); outline-offset: 1px; }
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: end; }
+  .btn { height: 42px; padding: 0 18px; border-radius: 999px; border: none; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 6px 16px rgba(139,92,246,.25); }
+  .btn-primary:disabled { background: #CFC3F7; box-shadow: none; }
+  .btn-light { background: #fff; color: var(--ink); border: 1px solid var(--field); }
+  .btn-danger { background: #fff; color: var(--deal); border: 1px solid #F5D0FE; }
+  .btn-sm { height: 32px; padding: 0 12px; font-size: 12px; }
+  .lang { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.3); border-radius: 999px; height: 36px; padding: 0 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; color: #fff; }
+  .lang.dark { background: #fff; border-color: var(--field); color: var(--ink); }
+  .toast { position: fixed; inset-inline: 0; bottom: 18px; margin: 0 auto; width: fit-content; max-width: 90vw; padding: 12px 18px; border-radius: 999px; font-size: 14px; font-weight: 600; z-index: 9; box-shadow: 0 10px 30px rgba(46,16,101,.25); }
+  .toast.ok { background: var(--ink); color: #fff; } .toast.bad { background: #FCE7F3; color: #9D174D; }
+  .ltr { direction: ltr; unicode-bidi: isolate; }
+  .mono { font-family: ui-monospace, monospace; font-size: 12px; }
+  .center { max-width: 440px; margin: 10vh auto 0; padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .acts { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .mono { white-space: nowrap; }
+  .line { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+  .bar { height: 8px; border-radius: 4px; background: var(--grad); }
+  .err { color: var(--deal); font-size: 14px; }
+  details > summary { cursor: pointer; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="app"><div class="center"><p class="sub">Loading…</p></div></div>
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://qobvbfoslkkacnwwmfln.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IlHnptn2_GGau_loOn1Spg_7pTJrpPH';
+const T = {
+  en: { other: 'عربي', admin: 'Admin', signTitle: 'SAVVI admin', signSub: "Enter your email. We'll email you a sign-in link.", email: 'Email', send: 'Send sign-in email', sent: 'Check your email and tap "Sign in" on this device.', back: 'Back', bad: 'Please enter a valid email.',
+    notAdmin: 'Admins only', notAdminSub: 'This account is not a SAVVI admin.', signOut: 'Sign out',
+    overview: 'Overview', businesses: 'Businesses', students: 'Students', money: 'Fees & invoices', reports: 'Reports', settings: 'Settings',
+    verified: 'Verified students', newMonth: 'new this month', activeBiz: 'Active businesses', branchesN: 'branches', redMonth: 'Redemptions this month', paidMonth: 'paid by students', feesMonth: 'Fees this month', owed: 'Total owed to SAVVI',
+    todo: 'To do', drafts: 'Draft invoices', unpaid: 'Issued, not paid', overdue: 'Overdue', draftReports: 'Draft reports', ending: 'Verifications ending in 30 days', byUni: 'Students by university',
+    newBiz: 'Add a business', nameEn: 'Name (English)', nameAr: 'Name (Arabic)', category: 'Category', phone: 'Phone', create: 'Create', save: 'Save', status: 'Status', manage: 'Manage', close: 'Close',
+    feePlan: 'Fee plan', reportPlan: 'Report plan', none: 'None', details: 'Details', branches: 'Branches', addBranch: 'Add branch', area: 'Area', address: 'Address', staff: 'Staff', addStaff: 'Add staff',
+    role: 'Role', owner: 'Owner', cashier: 'Cashier', branch: 'Branch', staffHint: 'The person must sign in once (cashier or business page) before you can add them.', active: 'Active', inactive: 'Paused', archived: 'Archived',
+    pause: 'Pause', resume: 'Resume', archive: 'Archive', search: 'Search name, email, ID', uni: 'University', sid: 'Student ID', until: 'Verified until', used: 'Uses', savedCol: 'Saved', card: 'Card', replaceCard: 'Replace card', reason: 'Reason?', joined: 'Joined',
+    balances: 'Who owes what', curPeriod: 'This period', notInv: 'Not invoiced', invUnpaid: 'Invoiced, unpaid', total: 'Total', nextColl: 'Next collection', genDue: 'Make invoices for a collection day', collDate: 'Collection date', make: 'Make invoices',
+    oneInv: 'One invoice', from: 'From', to: 'To', business: 'Business', invoices: 'Invoices', invoice: 'Invoice', period: 'Period', scans: 'Scans', amount: 'Amount', draft: 'Draft', issued: 'Issued', paid: 'Paid', void: 'Cancelled',
+    issue: 'Issue', markPaid: 'Mark paid', voidBtn: 'Cancel invoice', payNote: 'How was it paid? (e.g. KNET, bank transfer)', voidWhy: 'Why cancel?', confirmIssue: 'Issue this invoice? The owner will see it and it can no longer be edited.',
+    adjust: 'Fee correction', adjHint: 'Use a minus number to give credit (e.g. -0.500).', note: 'Note', addAdj: 'Add correction', open: 'Open',
+    genReport: 'Make a report', reportsList: 'Reports', plan: 'Plan', sentOn: 'Sent', markSent: 'Mark sent', view: 'View', reportHint: 'Reports only include businesses with a report plan. You send them yourself.',
+    appSettings: 'App settings', key: 'Setting', value: 'Value', feeRules: 'Fee bands', paidRange: 'Student paid', fee: 'Fee (KWD)', plans: 'Report plans', price: 'Monthly price', sections: 'Sections',
+    unis: 'Universities & email domains', addDomain: 'Add domain', domain: 'Domain', newUni: 'Add university', type: 'Type', cats: 'Categories', addCat: 'Add category', slug: 'Short code',
+    done: 'Done.', sure: 'Are you sure?', kwd: 'KWD', jsonBad: 'That value is not valid. Use a number, "text" in quotes, or [1,15].' },
+  ar: { other: 'English', admin: 'الإدارة', signTitle: 'إدارة SAVVI', signSub: 'أدخل بريدك الإلكتروني، وسنرسل لك رابط تسجيل الدخول.', email: 'البريد الإلكتروني', send: 'أرسل رسالة تسجيل الدخول', sent: 'تحقّق من بريدك واضغط "Sign in" على هذا الجهاز.', back: 'رجوع', bad: 'يرجى إدخال بريد إلكتروني صحيح.',
+    notAdmin: 'للمسؤولين فقط', notAdminSub: 'هذا الحساب ليس مسؤولاً في SAVVI.', signOut: 'تسجيل الخروج',
+    overview: 'نظرة عامة', businesses: 'الأنشطة التجارية', students: 'الطلاب', money: 'الرسوم والفواتير', reports: 'التقارير', settings: 'الإعدادات',
+    verified: 'الطلاب الموثّقون', newMonth: 'جديد هذا الشهر', activeBiz: 'الأنشطة الفعّالة', branchesN: 'فروع', redMonth: 'العمليات هذا الشهر', paidMonth: 'دفعه الطلاب', feesMonth: 'الرسوم هذا الشهر', owed: 'إجمالي المستحق لـ SAVVI',
+    todo: 'مهام', drafts: 'فواتير مسودة', unpaid: 'صادرة وغير مدفوعة', overdue: 'متأخرة', draftReports: 'تقارير مسودة', ending: 'توثيقات تنتهي خلال 30 يوماً', byUni: 'الطلاب حسب الجامعة',
+    newBiz: 'إضافة نشاط تجاري', nameEn: 'الاسم (بالإنجليزية)', nameAr: 'الاسم (بالعربية)', category: 'الفئة', phone: 'الهاتف', create: 'إنشاء', save: 'حفظ', status: 'الحالة', manage: 'إدارة', close: 'إغلاق',
+    feePlan: 'باقة الرسوم', reportPlan: 'باقة التقارير', none: 'لا يوجد', details: 'التفاصيل', branches: 'الفروع', addBranch: 'إضافة فرع', area: 'المنطقة', address: 'العنوان', staff: 'الموظفون', addStaff: 'إضافة موظف',
+    role: 'الدور', owner: 'المالك', cashier: 'كاشير', branch: 'الفرع', staffHint: 'يجب أن يسجّل الشخص الدخول مرة واحدة (صفحة الكاشير أو الأعمال) قبل إضافته.', active: 'فعّال', inactive: 'متوقف', archived: 'مؤرشف',
+    pause: 'إيقاف', resume: 'تفعيل', archive: 'أرشفة', search: 'ابحث بالاسم أو البريد أو الرقم', uni: 'الجامعة', sid: 'الرقم الجامعي', until: 'موثّق حتى', used: 'الاستخدام', savedCol: 'وفّر', card: 'البطاقة', replaceCard: 'استبدال البطاقة', reason: 'السبب؟', joined: 'انضم',
+    balances: 'المستحقات', curPeriod: 'الفترة الحالية', notInv: 'بدون فاتورة', invUnpaid: 'فاتورة غير مدفوعة', total: 'الإجمالي', nextColl: 'التحصيل القادم', genDue: 'إنشاء فواتير يوم التحصيل', collDate: 'تاريخ التحصيل', make: 'إنشاء الفواتير',
+    oneInv: 'فاتورة واحدة', from: 'من', to: 'إلى', business: 'النشاط', invoices: 'الفواتير', invoice: 'الفاتورة', period: 'الفترة', scans: 'العمليات', amount: 'المبلغ', draft: 'مسودة', issued: 'صادرة', paid: 'مدفوعة', void: 'ملغاة',
+    issue: 'إصدار', markPaid: 'تسجيل الدفع', voidBtn: 'إلغاء الفاتورة', payNote: 'كيف تم الدفع؟ (مثلاً KNET أو تحويل بنكي)', voidWhy: 'لماذا الإلغاء؟', confirmIssue: 'إصدار هذه الفاتورة؟ سيراها المالك ولن يمكن تعديلها.',
+    adjust: 'تصحيح الرسوم', adjHint: 'استخدم رقماً سالباً لإضافة رصيد (مثلاً -0.500).', note: 'ملاحظة', addAdj: 'إضافة التصحيح', open: 'عرض',
+    genReport: 'إنشاء تقرير', reportsList: 'التقارير', plan: 'الباقة', sentOn: 'أُرسل', markSent: 'تم الإرسال', view: 'عرض', reportHint: 'التقارير متاحة فقط للأنشطة المشتركة في باقة تقارير. أنت من يرسلها.',
+    appSettings: 'إعدادات التطبيق', key: 'الإعداد', value: 'القيمة', feeRules: 'شرائح الرسوم', paidRange: 'المبلغ المدفوع', fee: 'الرسوم (د.ك)', plans: 'باقات التقارير', price: 'السعر الشهري', sections: 'الأقسام',
+    unis: 'الجامعات ونطاقات البريد', addDomain: 'إضافة نطاق', domain: 'النطاق', newUni: 'إضافة جامعة', type: 'النوع', cats: 'الفئات', addCat: 'إضافة فئة', slug: 'رمز قصير',
+    done: 'تم.', sure: 'هل أنت متأكد؟', kwd: 'د.ك', jsonBad: 'القيمة غير صالحة. استخدم رقماً أو "نصاً" بين علامتي تنصيص أو [1,15].' }
+};
+function load(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+const S = { lang: load('savvi_lang', 'en'), view: 'loading', tab: 'overview', email: '', err: '', busy: false, user: null, D: {}, sel: null, q: '', studs: [], openInv: null, openRep: null };
+const t = (k) => T[S.lang][k] || k;
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const kwd = (x) => Number(x || 0).toFixed(3);
+const nm = (o, en, ar) => o ? ((S.lang === 'ar' && o[ar]) ? o[ar] : o[en]) : '';
+const loc = () => S.lang === 'ar' ? 'ar-KW-u-nu-latn' : 'en-GB';
+const d1 = (d) => d ? new Date(String(d).length <= 10 ? d + 'T00:00:00' : d).toLocaleDateString(loc(), { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+const today = () => new Date(Date.now() + 3 * 3600e3).toISOString().slice(0, 10);
+function toast(msg, bad) { const el = document.getElementById('toast'); el.innerHTML = `<div class="toast ${bad ? 'bad' : 'ok'}">${esc(msg)}</div>`; clearTimeout(toast.h); toast.h = setTimeout(() => el.innerHTML = '', bad ? 6000 : 2500); }
+function stPill(s) { const m = { active: ['', t('active')], inactive: ['warn', t('inactive')], archived: ['gray', t('archived')], draft: ['gray', t('draft')], issued: ['warn', t('issued')], paid: ['', t('paid')], void: ['gray', t('void')], sent: ['', t('sentOn')], verified: ['', '✓'], pending: ['warn', '…'], rejected: ['pink', '✕'] }[s] || ['gray', s]; return `<span class="pill ${m[0]}">${esc(m[1])}</span>`; }
+const byId = (arr) => Object.fromEntries((arr || []).map(x => [x.id, x]));
+
+/* ---------- data ---------- */
+let booting = false;
+async function boot() {
+  if (booting) return; booting = true;
+  try {
+    const { data } = await sb.auth.getSession();
+    if (!data.session) { booting = false; return go('signin'); }
+    S.user = data.session.user;
+    const { data: ok, error } = await sb.rpc('is_platform_admin');
+    if (error || !ok) { booting = false; return go('notadmin'); }
+    await loadAll(); booting = false; go('main');
+  } catch (e) { booting = false; S.err = e.message; go('notadmin'); }
+}
+async function q(p) { const r = await p; if (r.error) throw r.error; return r.data; }
+async function loadAll() {
+  const [stats, merchants, branches, emps, cats, tiers, rules, assigns, plans, subs, bals, invoices, reports, settings, insts, domains] = await Promise.all([
+    q(sb.rpc('admin_stats')), q(sb.from('merchants').select('*').order('name_en')), q(sb.from('branches').select('*').order('name')),
+    q(sb.from('merchant_employees').select('*').order('role')), q(sb.from('categories').select('*').order('sort_order')),
+    q(sb.from('fee_tiers').select('*').order('code')), q(sb.from('fee_tier_rules').select('*').eq('status', 'active').order('min_paid')),
+    q(sb.from('merchant_fee_tier_assignments').select('*').eq('status', 'active')), q(sb.from('report_plans').select('*').order('monthly_price')),
+    q(sb.from('merchant_report_subscriptions').select('*').eq('status', 'active')), q(sb.from('merchant_fee_balances').select('*')),
+    q(sb.from('invoices').select('*').order('created_at', { ascending: false }).limit(200)), q(sb.from('merchant_reports').select('*').order('generated_at', { ascending: false }).limit(100)),
+    q(sb.from('app_settings').select('*').order('key')), q(sb.from('institutions').select('*').order('name_en')), q(sb.from('institution_email_domains').select('*').order('domain'))
+  ]);
+  S.D = { stats, merchants, branches, emps, cats, tiers, rules, assigns, plans, subs, bals, invoices, reports, settings, insts, domains };
+}
+async function act(promise, after) {
+  try { S.busy = true; const r = await promise; if (r && r.error) throw r.error; await loadAll(); if (S.tab === 'students') await loadStudents(); S.busy = false; render(); toast(t('done')); if (after) after(r && r.data); }
+  catch (e) { S.busy = false; render(); toast(e.message || String(e), true); }
+}
+const rpc = (fn, args) => act(sb.rpc(fn, args));
+async function loadStudents() { const { data, error } = await sb.rpc('admin_list_students', { p_search: S.q || null }); if (error) toast(error.message, true); S.studs = data || []; }
+
+/* ---------- sign in ---------- */
+async function sendLink(ev) {
+  ev.preventDefault(); const email = (document.getElementById('email').value || '').trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { S.err = t('bad'); return render(); }
+  S.email = email; S.busy = true; render();
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname } });
+  S.busy = false; if (error) { S.err = error.message; return render(); } S.err = ''; go('sent');
+}
+async function signOut() { await sb.auth.signOut(); go('signin'); }
+function setLang() { S.lang = S.lang === 'en' ? 'ar' : 'en'; save('savvi_lang', S.lang); render(); }
+async function setTab(x) { S.tab = x; S.sel = null; S.openInv = null; S.openRep = null; if (x === 'students') await loadStudents(); render(); window.scrollTo(0, 0); }
+const F = (ev) => { ev.preventDefault(); return Object.fromEntries(new FormData(ev.target).entries()); };
+const nz = (v) => (v === undefined || v === '') ? null : v;
+
+/* ---------- views ---------- */
+function go(v) { S.view = v; render(); }
+const V = {
+  loading: () => `<div class="center"><p class="sub">…</p></div>`,
+  signin: () => `<form class="center" onsubmit="sendLink(event)" novalidate><div class="row"><div class="brand" style="margin:0"><i></i><b>SAVVI</b><span class="pill">${t('admin')}</span></div><button type="button" class="lang dark" onclick="setLang()">${t('other')}</button></div>
+    <h1>${t('signTitle')}</h1><p class="sub">${t('signSub')}</p><div><label class="l" for="email">${t('email')}</label><input class="in ltr" id="email" type="email" autocomplete="email" value="${esc(S.email)}"></div>
+    ${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<button class="btn btn-primary" style="height:52px" ${S.busy ? 'disabled' : ''}>${S.busy ? '…' : t('send')}</button></form>`,
+  sent: () => `<div class="center"><h1>✉️</h1><p class="sub">${t('sent')}</p><p class="ltr"><b>${esc(S.email)}</b></p><button class="btn btn-light" onclick="go('signin')">${t('back')}</button></div>`,
+  notadmin: () => `<div class="center"><h1>${t('notAdmin')}</h1><p class="sub">${t('notAdminSub')}</p><p class="ltr"><b>${esc(S.user && S.user.email)}</b></p>${S.err ? `<div class="err">${esc(S.err)}</div>` : ''}<button class="btn btn-light" onclick="signOut()">${t('signOut')}</button></div>`,
+  main: () => `<div class="shell"><nav class="side"><div class="brand"><i></i><b>SAVVI</b><span class="pill">${t('admin')}</span></div>
+      ${['overview', 'businesses', 'students', 'money', 'reports', 'settings'].map(x => `<button class="navbtn ${S.tab === x ? 'on' : ''}" onclick="setTab('${x}')">${t(x)}</button>`).join('')}
+      <div class="grow" style="flex:1"></div><button class="lang" onclick="setLang()">${t('other')}</button><button class="navbtn" onclick="signOut()">${t('signOut')}</button></nav>
+    <main><h1>${t(S.tab)}</h1>${({ overview, businesses, students, money, reports, settings })[S.tab]()}</main></div>`
+};
+function overview() {
+  const s = S.D.stats || {}; const unis = s.students_by_university || []; const max = Math.max(1, ...unis.map(u => u.n || u.students || 0));
+  return `<div class="grid4">
+    <div class="card kpi"><span class="muted">${t('verified')}</span><b>${s.verified_students || 0}</b><span class="muted">+${s.new_students_this_month || 0} ${t('newMonth')}</span></div>
+    <div class="card kpi"><span class="muted">${t('activeBiz')}</span><b>${s.active_businesses || 0}</b><span class="muted">${s.active_branches || 0} ${t('branchesN')}</span></div>
+    <div class="card kpi"><span class="muted">${t('redMonth')}</span><b>${s.redemptions_this_month || 0}</b><span class="muted">${kwd(s.paid_by_students_this_month)} ${t('kwd')} ${t('paidMonth')}</span></div>
+    <div class="card kpi"><span class="muted">${t('feesMonth')}</span><b>${kwd(s.fees_this_month)}</b><span class="muted">${t('kwd')}</span></div>
+    <div class="card kpi hot"><span class="muted">${t('owed')}</span><b>${kwd(s.total_owed)}</b><span class="muted">${t('kwd')}</span></div></div>
+  <div class="wrap"><div class="card"><h2>${t('todo')}</h2>
+      ${[['drafts', s.draft_invoices, 'money'], ['unpaid', s.unpaid_invoices, 'money'], ['overdue', s.overdue_invoices, 'money'], ['draftReports', s.draft_reports, 'reports'], ['ending', s.verifications_ending_30_days, 'students']]
+        .map(([k, n, tab]) => `<div class="line" style="align-items:center"><span>${t(k)}</span><span class="acts" style="flex-wrap:nowrap"><b>${n || 0}</b>${n ? `<button class="btn btn-light btn-sm" onclick="setTab('${tab}')">${t('open')}</button>` : ''}</span></div>`).join('')}</div>
+    <div class="card"><h2>${t('byUni')}</h2>${unis.map(u => { const n = u.n || u.students || 0; return `<div><div class="line"><span>${esc(S.lang === 'ar' && u.name_ar ? u.name_ar : (u.university || u.name_en || u.name))}</span><b>${n}</b></div><div class="bar" style="width:${Math.max(3, n / max * 100)}%"></div></div>`; }).join('') || `<span class="muted">—</span>`}</div></div>`;
+}
+function catOpts(sel) { return `<option value="">—</option>` + S.D.cats.map(c => `<option value="${c.id}" ${c.id === sel ? 'selected' : ''}>${esc(nm(c, 'name_en', 'name_ar'))}</option>`).join(''); }
+function businesses() {
+  const D = S.D, tiers = byId(D.tiers), plans = byId(D.plans), cats = byId(D.cats);
+  const tierOf = (mid) => { const a = D.assigns.find(x => x.merchant_id === mid && (!x.effective_to || x.effective_to >= today())); return a ? tiers[a.fee_tier_id] : D.tiers.find(x => x.is_default); };
+  const planOf = (mid) => { const s = D.subs.find(x => x.merchant_id === mid); return s ? plans[s.report_plan_id] : null; };
+  const m = S.sel ? D.merchants.find(x => x.id === S.sel) : null;
+  const list = `<div class="card"><div class="tbl"><table><thead><tr><th>${t('business')}</th><th>${t('category')}</th><th>${t('branches')}</th><th>${t('feePlan')}</th><th>${t('reportPlan')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+    ${D.merchants.map(x => `<tr class="${x.id === S.sel ? 'sel' : ''}"><td><b>${esc(x.name_en)}</b><div class="muted">${esc(x.name_ar || '')}</div></td><td>${esc(nm(cats[x.category_id], 'name_en', 'name_ar'))}</td>
+      <td class="num">${D.branches.filter(b => b.merchant_id === x.id && b.status === 'active').length}</td><td>${esc(tierOf(x.id) ? tierOf(x.id).name : '—')}</td><td>${esc(planOf(x.id) ? planOf(x.id).name : t('none'))}</td>
+      <td>${stPill(x.status)}</td><td><button class="btn btn-light btn-sm" onclick="S.sel='${x.id}';render()">${t('manage')}</button></td></tr>`).join('')}</tbody></table></div></div>`;
+  const add = `<details class="card"><summary>+ ${t('newBiz')}</summary><form class="form" onsubmit="const f=F(event);rpc('admin_create_merchant',{p_name_en:f.name_en,p_name_ar:nz(f.name_ar),p_category_id:nz(f.cat),p_contact_email:nz(f.email),p_contact_phone:nz(f.phone)})">
+    <div><label class="l">${t('nameEn')}</label><input class="in" name="name_en" required></div><div><label class="l">${t('nameAr')}</label><input class="in" name="name_ar" dir="rtl"></div>
+    <div><label class="l">${t('category')}</label><select class="in" name="cat">${catOpts()}</select></div><div><label class="l">${t('email')}</label><input class="in ltr" name="email" type="email"></div>
+    <div><label class="l">${t('phone')}</label><input class="in ltr" name="phone"></div><div><button class="btn btn-primary">${t('create')}</button></div></form></details>`;
+  if (!m) return add + list;
+  const brs = D.branches.filter(b => b.merchant_id === m.id), staff = D.emps.filter(e => e.merchant_id === m.id), bn = byId(brs);
+  const tier = tierOf(m.id), plan = planOf(m.id);
+  const detail = `<div class="card" style="border:2px solid var(--p)"><div class="row"><h2>${esc(m.name_en)}</h2><button class="btn btn-light btn-sm" onclick="S.sel=null;render()">${t('close')}</button></div>
+    <h3>${t('details')}</h3><form class="form" onsubmit="const f=F(event);rpc('admin_update_merchant',{p_id:'${m.id}',p_name_en:f.name_en,p_name_ar:nz(f.name_ar),p_category_id:nz(f.cat),p_contact_email:nz(f.email),p_contact_phone:nz(f.phone),p_status:f.status})">
+      <div><label class="l">${t('nameEn')}</label><input class="in" name="name_en" value="${esc(m.name_en)}"></div><div><label class="l">${t('nameAr')}</label><input class="in" name="name_ar" dir="rtl" value="${esc(m.name_ar || '')}"></div>
+      <div><label class="l">${t('category')}</label><select class="in" name="cat">${catOpts(m.category_id)}</select></div><div><label class="l">${t('email')}</label><input class="in ltr" name="email" value="${esc(m.contact_email || '')}"></div>
+      <div><label class="l">${t('phone')}</label><input class="in ltr" name="phone" value="${esc(m.contact_phone || '')}"></div>
+      <div><label class="l">${t('status')}</label><select class="in" name="status">${['active', 'inactive', 'archived'].map(s => `<option value="${s}" ${s === m.status ? 'selected' : ''}>${t(s)}</option>`).join('')}</select></div>
+      <div><button class="btn btn-primary">${t('save')}</button></div></form>
+    <div class="form"><div><label class="l">${t('feePlan')}</label><select class="in" onchange="rpc('admin_assign_fee_tier',{p_merchant_id:'${m.id}',p_tier_code:this.value})">${D.tiers.filter(x => x.status === 'active').map(x => `<option value="${x.code}" ${tier && tier.id === x.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div><label class="l">${t('reportPlan')}</label><select class="in" onchange="rpc('admin_set_report_plan',{p_merchant_id:'${m.id}',p_plan_code:nz(this.value)})"><option value="">${t('none')}</option>${D.plans.filter(x => x.status === 'active').map(x => `<option value="${x.code}" ${plan && plan.id === x.id ? 'selected' : ''}>${esc(x.name)} · ${kwd(x.monthly_price)}</option>`).join('')}</select></div></div>
+    <h3>${t('branches')}</h3><div class="tbl"><table><tbody>${brs.map(b => `<tr><td><b>${esc(b.name)}</b> <span class="muted">${esc(b.area || '')}</span></td><td>${stPill(b.status)}</td><td class="acts">${b.status === 'active' ? `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_branch_status',{p_id:'${b.id}',p_status:'inactive'})">${t('pause')}</button>` : `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_branch_status',{p_id:'${b.id}',p_status:'active'})">${t('resume')}</button>`}${b.status === 'inactive' ? `<button class="btn btn-danger btn-sm" onclick="confirm(t('sure'))&&rpc('admin_set_branch_status',{p_id:'${b.id}',p_status:'archived'})">${t('archive')}</button>` : ''}</td></tr>`).join('')}</tbody></table></div>
+    <form class="form" onsubmit="const f=F(event);rpc('admin_create_branch',{p_merchant_id:'${m.id}',p_name:f.name,p_area:nz(f.area),p_address:nz(f.address)})"><div><label class="l">${t('branch')}</label><input class="in" name="name" required></div><div><label class="l">${t('area')}</label><input class="in" name="area"></div><div><label class="l">${t('address')}</label><input class="in" name="address"></div><div><button class="btn btn-light">+ ${t('addBranch')}</button></div></form>
+    <h3>${t('staff')}</h3><div class="tbl"><table><tbody>${staff.map(e => `<tr><td><b>${esc(e.display_name)}</b></td><td>${e.role === 'owner' ? t('owner') : t('cashier')}</td><td>${esc(e.branch_id && bn[e.branch_id] ? bn[e.branch_id].name : '—')}</td><td>${stPill(e.status)}</td><td>${e.status === 'active' ? `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_employee_status',{p_id:'${e.id}',p_status:'inactive'})">${t('pause')}</button>` : `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_employee_status',{p_id:'${e.id}',p_status:'active'})">${t('resume')}</button>`}</td></tr>`).join('')}</tbody></table></div>
+    <p class="muted" style="margin:0">${t('staffHint')}</p>
+    <form class="form" onsubmit="const f=F(event);rpc('admin_add_employee',{p_merchant_id:'${m.id}',p_email:f.email,p_role:f.role,p_branch_id:f.role==='owner'?null:nz(f.branch),p_display_name:f.name})">
+      <div><label class="l">${t('email')}</label><input class="in ltr" name="email" type="email" required></div><div><label class="l">${t('nameEn')}</label><input class="in" name="name" required></div>
+      <div><label class="l">${t('role')}</label><select class="in" name="role"><option value="cashier">${t('cashier')}</option><option value="owner">${t('owner')}</option></select></div>
+      <div><label class="l">${t('branch')}</label><select class="in" name="branch">${brs.filter(b => b.status === 'active').map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select></div>
+      <div><button class="btn btn-light">+ ${t('addStaff')}</button></div></form></div>`;
+  return detail + list;
+}
+function students() {
+  return `<form class="row" onsubmit="event.preventDefault();S.q=document.getElementById('sq').value.trim();loadStudents().then(render)"><input class="in" id="sq" style="flex:1 1 260px" placeholder="${t('search')}" value="${esc(S.q)}"><button class="btn btn-primary">⌕</button></form>
+  <div class="card"><div class="tbl"><table><thead><tr><th>${t('nameEn')}</th><th>${t('uni')}</th><th>${t('sid')}</th><th>${t('until')}</th><th class="num">${t('used')}</th><th class="num">${t('savedCol')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+  ${S.studs.map(s => `<tr><td><b>${esc(s.full_name)}</b><div class="muted ltr">${esc(s.email)}</div></td><td>${esc(s.university)}</td><td class="ltr">${esc(s.student_number)}</td>
+    <td>${stPill(s.verification_status)} ${d1(s.verified_until)}</td><td class="num">${s.redemptions}</td><td class="num">${kwd(s.total_saved)}</td><td>${stPill(s.status)}</td>
+    <td class="acts">${s.status === 'active' ? `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_student_status',{p_student_id:'${s.student_id}',p_status:'inactive'})">${t('pause')}</button>` : `<button class="btn btn-light btn-sm" onclick="rpc('admin_set_student_status',{p_student_id:'${s.student_id}',p_status:'active'})">${t('resume')}</button>`}
+      ${s.has_card ? `<button class="btn btn-danger btn-sm" onclick="const r=prompt(t('reason'));r&&rpc('admin_replace_card',{p_student_id:'${s.student_id}',p_reason:r})">${t('replaceCard')}</button>` : ''}</td></tr>`).join('') || `<tr><td colspan="8" class="muted">—</td></tr>`}
+  </tbody></table></div></div>`;
+}
+function money() {
+  const D = S.D, ms = byId(D.merchants); const inv = S.openInv ? D.invoices.find(i => i.id === S.openInv) : null;
+  const opts = D.merchants.map(m => `<option value="${m.id}">${esc(m.name_en)}</option>`).join('');
+  return `<div class="card"><h2>${t('balances')}</h2><div class="tbl"><table><thead><tr><th>${t('business')}</th><th>${t('curPeriod')}</th><th class="num">${t('scans')}</th><th class="num">${t('notInv')}</th><th class="num">${t('invUnpaid')}</th><th class="num">${t('total')}</th><th>${t('nextColl')}</th></tr></thead><tbody>
+    ${D.bals.map(b => `<tr><td><b>${esc(b.merchant_name)}</b></td><td style="white-space:nowrap">${d1(b.current_period_start)} – ${d1(b.current_period_end)}</td><td class="num">${b.scans_this_period}</td><td class="num">${kwd(b.not_yet_invoiced)}</td><td class="num">${kwd(b.invoiced_unpaid)}</td><td class="num"><b>${kwd(b.total_owed)}</b></td><td>${d1(b.next_collection_date)}</td></tr>`).join('')}</tbody></table></div></div>
+  <div class="wrap"><form class="card" onsubmit="const f=F(event);act(sb.rpc('admin_generate_due_invoices',{p_collection_date:f.d}))"><h2>${t('genDue')}</h2><div class="form"><div><label class="l">${t('collDate')}</label><input class="in" type="date" name="d" value="${today()}"></div><div><button class="btn btn-primary">${t('make')}</button></div></div></form>
+    <form class="card" onsubmit="const f=F(event);rpc('admin_generate_invoice',{p_merchant_id:f.m,p_start:f.a,p_end:f.b})"><h2>${t('oneInv')}</h2><div class="form"><div><label class="l">${t('business')}</label><select class="in" name="m">${opts}</select></div><div><label class="l">${t('from')}</label><input class="in" type="date" name="a" required></div><div><label class="l">${t('to')}</label><input class="in" type="date" name="b" required></div><div><button class="btn btn-light">${t('create')}</button></div></div></form>
+    <form class="card" onsubmit="const f=F(event);rpc('admin_add_fee_adjustment',{p_merchant_id:f.m,p_amount:parseFloat(f.amt),p_note:f.note})"><h2>${t('adjust')}</h2><p class="muted" style="margin:0">${t('adjHint')}</p><div class="form"><div><label class="l">${t('business')}</label><select class="in" name="m">${opts}</select></div><div><label class="l">${t('amount')}</label><input class="in ltr" name="amt" inputmode="decimal" required></div><div><label class="l">${t('note')}</label><input class="in" name="note" required></div><div><button class="btn btn-light">${t('addAdj')}</button></div></div></form></div>
+  <div class="wrap"><div class="card" style="flex:3 1 480px"><h2>${t('invoices')}</h2><div class="tbl"><table><thead><tr><th>${t('invoice')}</th><th>${t('business')}</th><th>${t('period')}</th><th class="num">${t('amount')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+    ${D.invoices.map(i => `<tr class="${i.id === S.openInv ? 'sel' : ''}"><td class="mono ltr">${esc(i.invoice_number || '—')}</td><td>${esc(i.merchant_name || (ms[i.merchant_id] || {}).name_en)}</td><td style="white-space:nowrap">${d1(i.period_start)} – ${d1(i.period_end)}</td><td class="num"><b>${kwd(i.total_amount)}</b></td><td>${stPill(i.status)}</td>
+      <td class="acts"><button class="btn btn-light btn-sm" onclick="S.openInv='${i.id}';render()">${t('open')}</button>
+        ${i.status === 'draft' ? `<button class="btn btn-primary btn-sm" onclick="confirm(t('confirmIssue'))&&rpc('admin_issue_invoice',{p_invoice_id:'${i.id}'})">${t('issue')}</button>` : ''}
+        ${i.status === 'issued' ? `<button class="btn btn-primary btn-sm" onclick="const n=prompt(t('payNote'));n&&rpc('admin_mark_invoice_paid',{p_invoice_id:'${i.id}',p_note:n})">${t('markPaid')}</button>` : ''}
+        ${['draft', 'issued'].includes(i.status) ? `<button class="btn btn-danger btn-sm" onclick="const n=prompt(t('voidWhy'));n&&rpc('admin_void_invoice',{p_invoice_id:'${i.id}',p_reason:n})">${t('voidBtn')}</button>` : ''}</td></tr>`).join('') || `<tr><td colspan="6" class="muted">—</td></tr>`}
+    </tbody></table></div></div>
+    ${inv ? `<div class="card" style="flex:2 1 300px"><div class="row"><h2 class="ltr">${esc(inv.invoice_number || t('draft'))}</h2><button class="btn btn-light btn-sm" onclick="S.openInv=null;render()">${t('close')}</button></div>
+      <span class="muted">${esc(inv.merchant_name)} · ${d1(inv.period_start)} – ${d1(inv.period_end)}${inv.due_date ? ' · ' + d1(inv.due_date) : ''}</span>
+      ${(inv.summary || []).map(s => `<div class="line"><span>${s.scans} × ${kwd(s.fee_per_scan)} <span class="muted">${esc(s.plan || '')}</span></span><span>${kwd(s.subtotal)}</span></div>`).join('')}
+      ${(inv.adjustments || []).map(a => `<div class="line" style="color:var(--deal)"><span>${esc(a.note || a.type)}</span><span class="ltr">${kwd(a.amount)}</span></div>`).join('')}
+      <div class="line" style="border-top:1px solid var(--line);padding-top:8px;font-weight:700"><span>${t('total')}</span><span>${kwd(inv.total_amount)} ${t('kwd')}</span></div>
+      ${inv.payment_note ? `<span class="muted">${t('paid')}: ${esc(inv.payment_note)}</span>` : ''}${inv.void_reason ? `<span class="muted">${t('void')}: ${esc(inv.void_reason)}</span>` : ''}
+      <details><summary class="muted">${t('scans')} (${(inv.lines || []).length})</summary><div class="tbl"><table><tbody>${(inv.lines || []).map(l => `<tr><td class="ltr">${esc(l.date)}</td><td>${esc(l.branch || '')}</td><td class="num">${kwd(l.paid)}</td><td class="num">${kwd(l.fee)}</td></tr>`).join('')}</tbody></table></div></details></div>` : ''}</div>`;
+}
+function reports() {
+  const D = S.D, ms = byId(D.merchants), plans = byId(D.plans); const rep = S.openRep ? D.reports.find(r => r.id === S.openRep) : null;
+  const subbed = D.merchants.filter(m => D.subs.some(s => s.merchant_id === m.id));
+  const last = new Date(Date.now() + 3 * 3600e3); const a = new Date(Date.UTC(last.getUTCFullYear(), last.getUTCMonth() - 1, 1)).toISOString().slice(0, 10), b = new Date(Date.UTC(last.getUTCFullYear(), last.getUTCMonth(), 0)).toISOString().slice(0, 10);
+  return `<form class="card" onsubmit="const f=F(event);rpc('admin_generate_report',{p_merchant_id:f.m,p_start:f.a,p_end:f.b})"><h2>${t('genReport')}</h2><p class="muted" style="margin:0">${t('reportHint')}</p>
+    <div class="form"><div><label class="l">${t('business')}</label><select class="in" name="m">${subbed.map(m => `<option value="${m.id}">${esc(m.name_en)}</option>`).join('')}</select></div><div><label class="l">${t('from')}</label><input class="in" type="date" name="a" value="${a}"></div><div><label class="l">${t('to')}</label><input class="in" type="date" name="b" value="${b}"></div><div><button class="btn btn-primary" ${subbed.length ? '' : 'disabled'}>${t('create')}</button></div></div></form>
+  <div class="wrap"><div class="card" style="flex:3 1 460px"><h2>${t('reportsList')}</h2><div class="tbl"><table><thead><tr><th>${t('business')}</th><th>${t('plan')}</th><th>${t('period')}</th><th>${t('status')}</th><th></th></tr></thead><tbody>
+    ${D.reports.map(r => `<tr class="${r.id === S.openRep ? 'sel' : ''}"><td>${esc((ms[r.merchant_id] || {}).name_en)}</td><td>${esc((plans[r.report_plan_id] || {}).name)}</td><td style="white-space:nowrap">${d1(r.period_start)} – ${d1(r.period_end)}</td><td>${stPill(r.status)}${r.sent_at ? ' <span class="muted">' + d1(r.sent_at) + '</span>' : ''}</td>
+      <td class="acts"><button class="btn btn-light btn-sm" onclick="S.openRep='${r.id}';render()">${t('view')}</button>${r.status === 'draft' ? `<button class="btn btn-primary btn-sm" onclick="rpc('admin_mark_report_sent',{p_report_id:'${r.id}'})">${t('markSent')}</button>` : ''}</td></tr>`).join('') || `<tr><td colspan="5" class="muted">—</td></tr>`}</tbody></table></div></div>
+    ${rep ? `<div class="card" style="flex:2 1 320px"><div class="row"><h2>${esc((ms[rep.merchant_id] || {}).name_en)}</h2><button class="btn btn-light btn-sm" onclick="S.openRep=null;render()">${t('close')}</button></div>${reportHtml(rep.report)}</div>` : ''}</div>`;
+}
+function reportHtml(r) {
+  if (!r || typeof r !== 'object') return '';
+  const val = (v) => v == null ? '—' : typeof v === 'number' ? (Number.isInteger(v) ? v : kwd(v)) : esc(v);
+  const lab = (k) => esc(String(k).replace(/_/g, ' '));
+  const block = (k, v) => {
+    if (Array.isArray(v)) { if (!v.length) return `<div class="line"><span>${lab(k)}</span><span>—</span></div>`;
+      if (typeof v[0] !== 'object') return `<div class="line"><span>${lab(k)}</span><span>${v.map(val).join(', ')}</span></div>`;
+      const cols = Object.keys(v[0]); return `<h3>${lab(k)}</h3><div class="tbl"><table><thead><tr>${cols.map(c => `<th>${lab(c)}</th>`).join('')}</tr></thead><tbody>${v.map(row => `<tr>${cols.map(c => `<td>${val(row[c])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+    if (v && typeof v === 'object') return `<h3>${lab(k)}</h3>${Object.entries(v).map(([a, b]) => typeof b === 'object' && b ? block(a, b) : `<div class="line"><span>${lab(a)}</span><b>${val(b)}</b></div>`).join('')}`;
+    return `<div class="line"><span>${lab(k)}</span><b>${val(v)}</b></div>`;
+  };
+  return Object.entries(r).map(([k, v]) => block(k, v)).join('');
+}
+function settings() {
+  const D = S.D, tiers = D.tiers.filter(x => x.status === 'active');
+  const rng = (r) => `${r.min_paid == null ? '0' : (r.min_inclusive ? '≥ ' : '> ') + kwd(r.min_paid)}${r.max_paid == null ? ' +' : ' … ' + (r.max_inclusive ? '≤ ' : '< ') + kwd(r.max_paid)}`;
+  return `<div class="card"><h2>${t('appSettings')}</h2><div class="tbl"><table><thead><tr><th>${t('key')}</th><th>${t('value')}</th><th></th></tr></thead><tbody>
+    ${D.settings.filter(s => s.status === 'active').map(s => `<tr><td><b class="mono">${esc(s.key)}</b><div class="muted">${esc(s.description || '')}</div></td>
+      <td><input class="in ltr mono" id="set_${esc(s.key)}" value="${esc(JSON.stringify(s.value))}" style="min-width:140px"></td>
+      <td><button class="btn btn-light btn-sm" onclick="saveSetting('${esc(s.key)}')">${t('save')}</button></td></tr>`).join('')}</tbody></table></div></div>
+  <div class="wrap">${tiers.map(tr => `<div class="card"><h2>${t('feeRules')} · ${esc(tr.name)}</h2>${D.rules.filter(r => r.fee_tier_id === tr.id).map(r => `<div class="form" style="grid-template-columns:1fr 110px auto"><span class="ltr" style="font-size:14px">${rng(r)}</span>
+      <input class="in ltr" id="rule_${r.id}" value="${kwd(r.fee_amount)}" inputmode="decimal"><button class="btn btn-light btn-sm" onclick="rpc('admin_update_fee_rule',{p_rule_id:'${r.id}',p_fee:parseFloat(document.getElementById('rule_${r.id}').value)})">${t('save')}</button></div>`).join('')}</div>`).join('')}</div>
+  <div class="card"><h2>${t('plans')}</h2>${D.plans.filter(p => p.status === 'active').map(p => `<form class="form" style="grid-template-columns:120px 140px 1fr auto" onsubmit="event.preventDefault();savePlan('${p.code}',this)"><b>${esc(p.name)}</b>
+      <div><label class="l">${t('price')}</label><input class="in ltr" name="price" value="${kwd(p.monthly_price)}"></div><div><label class="l">${t('sections')}</label><input class="in ltr mono" name="sections" value="${esc(JSON.stringify(p.sections))}"></div><button class="btn btn-light btn-sm">${t('save')}</button></form>`).join('')}</div>
+  <div class="card"><h2>${t('unis')}</h2><div class="tbl"><table><tbody>${D.insts.map(i => `<tr><td><b>${esc(nm(i, 'name_en', 'name_ar'))}</b><div class="muted">${esc(i.institution_type || '')}</div></td>
+      <td>${D.domains.filter(d => d.institution_id === i.id).map(d => `<span class="acts" style="margin:2px 0"><span class="ltr mono">${esc(d.domain)}</span>${stPill(d.status)}<button class="btn btn-light btn-sm" onclick="rpc('admin_set_domain_status',{p_id:'${d.id}',p_status:'${d.status === 'active' ? 'inactive' : 'active'}'})">${d.status === 'active' ? t('pause') : t('resume')}</button></span>`).join('<br>')}</td>
+      <td><form class="acts" onsubmit="const f=F(event);rpc('admin_add_domain',{p_institution_id:'${i.id}',p_domain:f.d})"><input class="in ltr" name="d" placeholder="uni.edu.kw" style="width:150px;height:32px"><button class="btn btn-light btn-sm">+</button></form></td></tr>`).join('')}</tbody></table></div>
+    <form class="form" onsubmit="const f=F(event);rpc('admin_create_institution',{p_name_en:f.en,p_name_ar:nz(f.ar),p_type:f.type})"><div><label class="l">${t('nameEn')}</label><input class="in" name="en" required></div><div><label class="l">${t('nameAr')}</label><input class="in" name="ar" dir="rtl"></div>
+      <div><label class="l">${t('type')}</label><select class="in" name="type"><option value="university">university</option><option value="college">college</option></select></div><div><button class="btn btn-light">+ ${t('newUni')}</button></div></form></div>
+  <div class="card"><h2>${t('cats')}</h2><div class="acts">${D.cats.map(c => `<span class="pill">${esc(nm(c, 'name_en', 'name_ar'))}</span>`).join('')}</div>
+    <form class="form" onsubmit="const f=F(event);rpc('admin_create_category',{p_slug:f.slug,p_name_en:f.en,p_name_ar:f.ar})"><div><label class="l">${t('slug')}</label><input class="in ltr" name="slug" placeholder="gym" required></div><div><label class="l">${t('nameEn')}</label><input class="in" name="en" required></div><div><label class="l">${t('nameAr')}</label><input class="in" name="ar" dir="rtl" required></div><div><button class="btn btn-light">+ ${t('addCat')}</button></div></form></div>`;
+}
+function parseJson(s) { try { return { ok: true, v: JSON.parse(s) }; } catch (e) { return { ok: false }; } }
+function saveSetting(key) { const r = parseJson(document.getElementById('set_' + key).value); if (!r.ok) return toast(t('jsonBad'), true); rpc('admin_set_setting', { p_key: key, p_value: r.v }); }
+function savePlan(code, form) { const r = parseJson(form.sections.value); if (!r.ok) return toast(t('jsonBad'), true); rpc('admin_update_report_plan', { p_code: code, p_price: parseFloat(form.price.value), p_sections: r.v }); }
+function render() { document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === 'ar' ? 'rtl' : 'ltr'; document.getElementById('app').innerHTML = V[S.view](); }
+sb.auth.onAuthStateChange((ev) => { if (ev === 'SIGNED_IN' && ['signin', 'sent', 'loading'].includes(S.view)) setTimeout(boot, 0); });
+render(); boot();
+</script>
+</body>
+</html>
